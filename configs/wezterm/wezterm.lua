@@ -143,6 +143,35 @@ config.keys = {
     mods = 'ALT',
     action = wezterm.action.SendString '\x1bf',  -- Move forward one word
   },
+  
+  -- Selection and Clipboard
+  -- -----------------------
+  
+  -- Select all: Modifier + A (same as iTerm2)
+  -- Gets all text from scrollback and copies to clipboard
+  {
+    key = 'a',
+    mods = modifier_key,
+    action = wezterm.action_callback(function(window, pane)
+      local dims = pane:get_dimensions()
+      local txt = pane:get_text_from_region(0, dims.scrollback_top, 0, dims.scrollback_top + dims.scrollback_rows)
+      window:copy_to_clipboard(txt:match('^%s*(.-)%s*$'))  -- Trim leading and trailing whitespace
+    end),
+  },
+  
+  -- Copy selection: Modifier + C (standard behavior)
+  {
+    key = 'c',
+    mods = modifier_key,
+    action = wezterm.action.CopyTo 'Clipboard',
+  },
+  
+  -- Paste: Modifier + V (standard behavior)
+  {
+    key = 'v',
+    mods = modifier_key,
+    action = wezterm.action.PasteFrom 'Clipboard',
+  },
 }
 
 -- Mouse Behavior
