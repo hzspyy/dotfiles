@@ -530,6 +530,7 @@ in
     nodejs_20
     openjdk
     pkg-config
+    pnpm
     portaudio
     (python3.withPackages (ps: [ ps.pipx ]))
     rust-analyzer
