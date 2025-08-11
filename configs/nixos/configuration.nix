@@ -207,7 +207,7 @@ in
     packageOverrides = pkgs: {
       # Override ollama to version 0.11.0 with auto-calculated hash
       ollama = pkgs.ollama.overrideAttrs (oldAttrs: rec {
-        version = "0.11.0";
+        version = "0.11.4";
         src = pkgs.fetchFromGitHub {
           owner = "ollama";
           repo = "ollama";
@@ -450,6 +450,7 @@ in
     dropbox
     filebot
     firefox
+    google-cloud-sdk
     handbrake
     inkscape
     moonlight-qt
@@ -493,6 +494,7 @@ in
     lazygit
     libnotify
     lm_sensors
+    lsof
     micro
     neovim
     nixfmt-rfc-style
