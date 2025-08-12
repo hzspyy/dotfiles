@@ -1,5 +1,6 @@
 [defaults]
 llm-ollama-model = "devstral:24b"
+#llm-ollama-model = "gpt-oss:20b"
 llm-ollama-host = "http://pc.local:11434"
 asr-wyoming-ip = "192.168.1.143"
 tts-wyoming-ip = "192.168.1.143"
