@@ -180,6 +180,7 @@ in
     8008 # Synapse
     8009 # Synapse
     8448 # Synapse
+    9292 # llama-swap proxy
   ];
 
   # --- Nix Package Manager Settings ---
@@ -328,6 +329,119 @@ in
     openFirewall = true;
     environmentVariables = {
       OLLAMA_KEEP_ALIVE = "1h";
+    };
+  };
+
+  # --- llama-swap service ---
+  # Transparent proxy for automatic model swapping with llama.cpp
+  environment.etc."llama-swap/config.yaml".text = ''
+    # llama-swap configuration
+    # This config uses llama.cpp's server to serve models on demand
+
+    models:
+      # Small models
+      "qwen2.5":
+        cmd: |
+          ${pkgs.llama-cpp}/bin/llama-server
+          -hf bartowski/Qwen2.5-0.5B-Instruct-GGUF:Q4_K_M
+          --port ''${PORT}
+          --ctx-size 8192
+          --n-gpu-layers -1
+
+      "smollm2":
+        cmd: |
+          ${pkgs.llama-cpp}/bin/llama-server
+          -hf HuggingFaceTB/SmolLM2-135M-Instruct-GGUF:smollm2-135m-instruct-q8_0.gguf
+          --port ''${PORT}
+          --ctx-size 4096
+          --n-gpu-layers -1
+
+      # Coding models
+      "qwen3-coder-30b":
+        cmd: |
+          ${pkgs.llama-cpp}/bin/llama-server
+          -hf unsloth/Qwen3-Coder-30B-A3B-Instruct-GGUF:Qwen3-Coder-30B-A3B-q4_k_m.gguf
+          --port ''${PORT}
+          --ctx-size 32768
+          --n-gpu-layers -1
+          --flash-attn
+
+      "devstral-small":
+        cmd: |
+          ${pkgs.llama-cpp}/bin/llama-server
+          -hf mistralai/Devstral-Small-2507_gguf:devstral-small-q4_k_m.gguf
+          --port ''${PORT}
+          --ctx-size 32768
+          --n-gpu-layers -1
+          --flash-attn
+
+      # Large reasoning models
+      "dolphin-mistral-24b":
+        cmd: |
+          ${pkgs.llama-cpp}/bin/llama-server
+          -hf bartowski/cognitivecomputations_Dolphin-Mistral-24B-Venice-Edition-GGUF:Dolphin-Mistral-24B-Venice-Edition-Q4_K_M.gguf
+          --port ''${PORT}
+          --ctx-size 32768
+          --n-gpu-layers -1
+          --flash-attn
+
+      "qwen3-thinking-4b":
+        cmd: |
+          ${pkgs.llama-cpp}/bin/llama-server
+          -hf lmstudio-community/Qwen3-4B-Thinking-2507-GGUF:Qwen3-4B-Thinking-2507-Q4_K_M.gguf
+          --port ''${PORT}
+          --ctx-size 32768
+          --n-gpu-layers -1
+
+      "gpt-oss-20b":
+        cmd: |
+          ${pkgs.llama-cpp}/bin/llama-server
+          -hf unsloth/gpt-oss-20b-GGUF:gpt-oss-20b-f16.gguf
+          --port ''${PORT}
+          --ctx-size 8192
+          --n-gpu-layers -1
+          --flash-attn
+
+    # TTL keeps models in memory for specified seconds after last use
+    ttl: 3600  # Keep models loaded for 1 hour (like OLLAMA_KEEP_ALIVE)
+
+    # Groups allow running multiple models simultaneously
+    # Uncomment and adjust based on your VRAM (24GB RTX 3090)
+    # groups:
+    #   small:  # ~2-4GB VRAM total
+    #     - "qwen2.5"
+    #     - "smollm2"
+    #     - "qwen3-thinking-4b"
+    #   coding:  # Can't run both together (~15-20GB each)
+    #     - "qwen3-coder-30b"
+    #     - "devstral-small"
+    #   large:  # ~15GB VRAM
+    #     - "dolphin-mistral-24b"
+  '';
+
+  systemd.services.llama-swap = {
+    description = "llama-swap - OpenAI compatible proxy with automatic model swapping";
+    after = [ "network.target" ];
+    wantedBy = [ "multi-user.target" ];
+
+    serviceConfig = {
+      Type = "simple";
+      User = "basnijholt";
+      Group = "users";
+      ExecStart = "${config.users.users.basnijholt.home}/.local/bin/llama-swap --config /etc/llama-swap/config.yaml --listen 0.0.0.0:9292";
+      Restart = "always";
+      RestartSec = 10;
+
+      # Environment for CUDA support
+      Environment = [
+        "PATH=/run/current-system/sw/bin"
+        "LD_LIBRARY_PATH=/run/opengl-driver/lib:/run/opengl-driver-32/lib"
+      ];
+
+      # Environment needs access to cache directories for model downloads
+      # Simplified security settings to avoid namespace issues
+      PrivateTmp = true;
+      NoNewPrivileges = true;
     };
   };
   services.wyoming.faster-whisper = {
@@ -493,6 +607,7 @@ in
     keyd
     lazygit
     libnotify
+    llama-cpp
     lm_sensors
     lsof
     micro
