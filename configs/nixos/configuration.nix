@@ -340,7 +340,7 @@ in
 
     models:
       # Small models
-      "qwen2.5":
+      "qwen2.5-0.5b":
         cmd: |
           ${pkgs.llama-cpp}/bin/llama-server
           -hf bartowski/Qwen2.5-0.5B-Instruct-GGUF:Q4_K_M
@@ -348,7 +348,7 @@ in
           --ctx-size 8192
           --n-gpu-layers -1
 
-      "smollm2":
+      "smollm2-135m":
         cmd: |
           ${pkgs.llama-cpp}/bin/llama-server
           -hf HuggingFaceTB/SmolLM2-135M-Instruct-GGUF:smollm2-135m-instruct-q8_0.gguf
@@ -366,7 +366,7 @@ in
           --n-gpu-layers -1
           --flash-attn
 
-      "devstral-small":
+      "devstral-small-22b":
         cmd: |
           ${pkgs.llama-cpp}/bin/llama-server
           -hf mistralai/Devstral-Small-2507_gguf:devstral-small-q4_k_m.gguf
@@ -398,9 +398,30 @@ in
           ${pkgs.llama-cpp}/bin/llama-server
           -hf unsloth/gpt-oss-20b-GGUF:gpt-oss-20b-f16.gguf
           --port ''${PORT}
-          --ctx-size 8192
+          --ctx-size 32768
           --n-gpu-layers -1
           --flash-attn
+          --cont-batching
+          --no-mmap
+          --threads 12
+          --parallel 2
+
+      # Experimental: GPT-OSS-120B with CPU offloading
+      # Requires ~66GB total memory (VRAM + RAM)
+      # Expect ~25-30 tokens/second on RTX 3090 + 64GB RAM
+      "gpt-oss-120b":
+        cmd: |
+          ${pkgs.llama-cpp}/bin/llama-server
+          -hf unsloth/gpt-oss-120b-GGUF:Q4_K_XL
+          --port ''${PORT}
+          --ctx-size 32768
+          --n-gpu-layers 999
+          --n-cpu-moe 27
+          --flash-attn
+          --cont-batching
+          --no-mmap
+          --threads 12
+          --parallel 2
 
     # TTL keeps models in memory for specified seconds after last use
     ttl: 3600  # Keep models loaded for 1 hour (like OLLAMA_KEEP_ALIVE)
@@ -409,14 +430,15 @@ in
     # Uncomment and adjust based on your VRAM (24GB RTX 3090)
     # groups:
     #   small:  # ~2-4GB VRAM total
-    #     - "qwen2.5"
-    #     - "smollm2"
+    #     - "qwen2.5-0.5b"
+    #     - "smollm2-135m"
     #     - "qwen3-thinking-4b"
     #   coding:  # Can't run both together (~15-20GB each)
     #     - "qwen3-coder-30b"
-    #     - "devstral-small"
-    #   large:  # ~15GB VRAM
+    #     - "devstral-small-22b"
+    #   large:  # ~13-15GB VRAM each
     #     - "dolphin-mistral-24b"
+    #     - "gpt-oss-20b"
   '';
 
   systemd.services.llama-swap = {
