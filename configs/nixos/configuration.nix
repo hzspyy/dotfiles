@@ -583,7 +583,7 @@ in
     # CLI Power Tools & Utilities
     asciinema
     atuin
-    # azure-cli
+    azure-cli
     bat
     btop
     claude-code
