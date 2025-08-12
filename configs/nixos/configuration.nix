@@ -218,6 +218,28 @@ in
         # Disable tests due to flaky TestConvertAdapter
         doCheck = false;
       });
+
+      # Override llama-cpp to latest version b6139
+      llama-cpp =
+        (pkgs.llama-cpp.override {
+          cudaSupport = true;
+          rocmSupport = false;
+          metalSupport = false;
+        }).overrideAttrs
+          (oldAttrs: rec {
+            version = "6139"; # Latest release as of Aug 2025
+            src = pkgs.fetchFromGitHub {
+              owner = "ggml-org";
+              repo = "llama.cpp";
+              tag = "b${version}";
+              hash = "sha256-oClTUbwVagHb08LmUsOJErr4lEVYSyqfU5nGKTlsH+o=";
+              leaveDotGit = true;
+              postFetch = ''
+                git -C "$out" rev-parse --short HEAD > $out/COMMIT
+                find "$out" -name .git -print0 | xargs -0 rm -rf
+              '';
+            };
+          });
     };
   };
 
