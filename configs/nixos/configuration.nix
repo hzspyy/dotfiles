@@ -227,7 +227,7 @@ in
           metalSupport = false;
         }).overrideAttrs
           (oldAttrs: rec {
-            version = "6139"; # Latest release as of Aug 2025
+            version = "6150"; # Latest release as of Aug 2025
             src = pkgs.fetchFromGitHub {
               owner = "ggml-org";
               repo = "llama.cpp";
