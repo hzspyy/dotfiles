@@ -365,85 +365,85 @@ in
       "qwen2.5-0.5b":
         cmd: |
           ${pkgs.llama-cpp}/bin/llama-server
-          -hf bartowski/Qwen2.5-0.5B-Instruct-GGUF:Q4_K_M
+          --hf-repo bartowski/Qwen2.5-0.5B-Instruct-GGUF
+          --hf-file Qwen2.5-0.5B-Instruct-Q4_K_M.gguf
           --port ''${PORT}
           --ctx-size 8192
-          --n-gpu-layers -1
+          --n-gpu-layers 99
+          --main-gpu 0
 
       "smollm2-135m":
         cmd: |
           ${pkgs.llama-cpp}/bin/llama-server
-          -hf HuggingFaceTB/SmolLM2-135M-Instruct-GGUF:smollm2-135m-instruct-q8_0.gguf
+          --hf-repo unsloth/SmolLM2-135M-Instruct-GGUF
+          --hf-file SmolLM2-135M-Instruct-Q8_0.gguf
           --port ''${PORT}
           --ctx-size 4096
-          --n-gpu-layers -1
+          --n-gpu-layers 99
+          --main-gpu 0
 
       # Coding models
       "qwen3-coder-30b":
         cmd: |
           ${pkgs.llama-cpp}/bin/llama-server
-          -hf unsloth/Qwen3-Coder-30B-A3B-Instruct-GGUF:Qwen3-Coder-30B-A3B-q4_k_m.gguf
+          --hf-repo unsloth/Qwen3-Coder-30B-A3B-Instruct-GGUF
+          --hf-file Qwen3-Coder-30B-A3B-q4_k_m.gguf
+          --port ''${PORT}
           --port ''${PORT}
           --ctx-size 32768
-          --n-gpu-layers -1
+          --n-gpu-layers 99
+          --main-gpu 0
           --flash-attn
 
       "devstral-small-22b":
         cmd: |
           ${pkgs.llama-cpp}/bin/llama-server
-          -hf mistralai/Devstral-Small-2507_gguf:devstral-small-q4_k_m.gguf
+          --hf-repo mistralai/Devstral-Small-2507_gguf
+          --hf-file Devstral-Small-2507-Q4_K_M.gguf
           --port ''${PORT}
           --ctx-size 32768
-          --n-gpu-layers -1
+          --n-gpu-layers 99
+          --main-gpu 0
           --flash-attn
 
       # Large reasoning models
       "dolphin-mistral-24b":
         cmd: |
           ${pkgs.llama-cpp}/bin/llama-server
-          -hf bartowski/cognitivecomputations_Dolphin-Mistral-24B-Venice-Edition-GGUF:Dolphin-Mistral-24B-Venice-Edition-Q4_K_M.gguf
+          --hf-repo bartowski/cognitivecomputations_Dolphin-Mistral-24B-Venice-Edition-GGUF
+          --hf-file cognitivecomputations_Dolphin-Mistral-24B-Venice-Edition-Q4_K_M.gguf
           --port ''${PORT}
           --ctx-size 32768
-          --n-gpu-layers -1
+          --n-gpu-layers 99
+          --main-gpu 0
           --flash-attn
 
       "qwen3-thinking-4b":
         cmd: |
           ${pkgs.llama-cpp}/bin/llama-server
-          -hf lmstudio-community/Qwen3-4B-Thinking-2507-GGUF:Qwen3-4B-Thinking-2507-Q4_K_M.gguf
+          --hf-repo unsloth/Qwen3-4B-Thinking-2507-GGUF
+          --hf-file Qwen3-4B-Thinking-2507-Q4_K_M.gguf
           --port ''${PORT}
           --ctx-size 32768
-          --n-gpu-layers -1
+          --n-gpu-layers 99
+          --main-gpu 0
 
       "gpt-oss-20b":
         cmd: |
           ${pkgs.llama-cpp}/bin/llama-server
-          -hf unsloth/gpt-oss-20b-GGUF:gpt-oss-20b-f16.gguf
+          --hf-repo unsloth/gpt-oss-20b-GGUF
+          --hf-file gpt-oss-20b-Q4_K_M.gguf
           --port ''${PORT}
           --ctx-size 32768
-          --n-gpu-layers -1
+          --n-gpu-layers 99
+          --main-gpu 0
           --flash-attn
           --cont-batching
           --no-mmap
           --threads 12
           --parallel 2
 
-      # Experimental: GPT-OSS-120B with CPU offloading
-      # Requires ~66GB total memory (VRAM + RAM)
-      # Expect ~25-30 tokens/second on RTX 3090 + 64GB RAM
-      "gpt-oss-120b":
-        cmd: |
-          ${pkgs.llama-cpp}/bin/llama-server
-          -hf unsloth/gpt-oss-120b-GGUF:Q4_K_XL
-          --port ''${PORT}
-          --ctx-size 32768
-          --n-gpu-layers 999
-          --n-cpu-moe 27
-          --flash-attn
-          --cont-batching
-          --no-mmap
-          --threads 12
-          --parallel 2
+    healthCheckTimeout: 600  # 10 minutes for large model download + loading
 
     # TTL keeps models in memory for specified seconds after last use
     ttl: 3600  # Keep models loaded for 1 hour (like OLLAMA_KEEP_ALIVE)
@@ -472,7 +472,7 @@ in
       Type = "simple";
       User = "basnijholt";
       Group = "users";
-      ExecStart = "${config.users.users.basnijholt.home}/.local/bin/llama-swap --config /etc/llama-swap/config.yaml --listen 0.0.0.0:9292";
+      ExecStart = "${config.users.users.basnijholt.home}/.local/bin/llama-swap --config /etc/llama-swap/config.yaml --listen 0.0.0.0:9292 --watch-config";
       Restart = "always";
       RestartSec = 10;
 
