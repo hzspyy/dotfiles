@@ -472,7 +472,7 @@ in
       Type = "simple";
       User = "basnijholt";
       Group = "users";
-      ExecStart = "${config.users.users.basnijholt.home}/.local/bin/llama-swap --config /etc/llama-swap/config.yaml --listen 0.0.0.0:9292 --watch-config";
+      ExecStart = "${pkgs.llama-swap}/bin/llama-swap --config /etc/llama-swap/config.yaml --listen 0.0.0.0:9292 --watch-config";
       Restart = "always";
       RestartSec = 10;
 
