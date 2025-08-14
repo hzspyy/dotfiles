@@ -4,7 +4,6 @@
 { config, pkgs, ... }:
 
 let
-  home-manager = builtins.fetchTarball "https://github.com/nix-community/home-manager/archive/master.tar.gz";
 
   ###############################################################################
   # NVIDIA Wayland VRAM workaround (driver ≥ R565)
@@ -52,7 +51,6 @@ in
   imports = [
     ./kinto.nix
     ./hardware-configuration.nix
-    (import "${home-manager}/nixos")
   ];
 
   # ===================================
@@ -219,7 +217,7 @@ in
         doCheck = false;
       });
 
-      # Override llama-cpp to latest version b6139
+      # Override llama-cpp to latest version b6150 with CUDA support
       llama-cpp =
         (pkgs.llama-cpp.override {
           cudaSupport = true;
@@ -227,7 +225,7 @@ in
           metalSupport = false;
         }).overrideAttrs
           (oldAttrs: rec {
-            version = "6150"; # Latest release as of Aug 2025
+            version = "6150";
             src = pkgs.fetchFromGitHub {
               owner = "ggml-org";
               repo = "llama.cpp";
@@ -240,6 +238,18 @@ in
               '';
             };
           });
+
+      # llama-swap from GitHub releases
+      llama-swap = pkgs.runCommand "llama-swap" { } ''
+        mkdir -p $out/bin
+        tar -xzf ${
+          pkgs.fetchurl {
+            url = "https://github.com/mostlygeek/llama-swap/releases/download/v150/llama-swap_150_linux_amd64.tar.gz";
+            hash = "sha256-NKXN2zM8qjBYBgkhQ78obUiMZCFNcW2av3fJNJrFm2Y=";
+          }
+        } -C $out/bin
+        chmod +x $out/bin/llama-swap
+      '';
     };
   };
 
@@ -356,6 +366,13 @@ in
 
   # --- llama-swap service ---
   # Transparent proxy for automatic model swapping with llama.cpp
+
+  # GPT-OSS chat template directly from HuggingFace
+  environment.etc."llama-templates/openai-gpt-oss-20b.jinja".source = pkgs.fetchurl {
+    url = "https://huggingface.co/openai/gpt-oss-20b/resolve/main/chat_template.jinja";
+    sha256 = "sha256-pMmRnLvUrN1RzP/iLaBJJksbc+WQVfpYgRqZ7718gUY=";
+  };
+
   environment.etc."llama-swap/config.yaml".text = ''
     # llama-swap configuration
     # This config uses llama.cpp's server to serve models on demand
@@ -389,13 +406,12 @@ in
           --hf-repo unsloth/Qwen3-Coder-30B-A3B-Instruct-GGUF
           --hf-file Qwen3-Coder-30B-A3B-q4_k_m.gguf
           --port ''${PORT}
-          --port ''${PORT}
           --ctx-size 32768
           --n-gpu-layers 99
           --main-gpu 0
           --flash-attn
 
-      "devstral-small-22b":
+      "devstral-24b":
         cmd: |
           ${pkgs.llama-cpp}/bin/llama-server
           --hf-repo mistralai/Devstral-Small-2507_gguf
@@ -437,6 +453,8 @@ in
           --ctx-size 32768
           --n-gpu-layers 99
           --main-gpu 0
+          --jinja
+          --chat-template-file /etc/llama-templates/openai-gpt-oss-20b.jinja
           --flash-attn
           --cont-batching
           --no-mmap
@@ -735,25 +753,21 @@ in
   # ===================================
   # Home Manager Configuration
   # ===================================
-  home-manager = {
-    useGlobalPkgs = true;
-    useUserPackages = true;
-    users.basnijholt =
-      { pkgs, config, ... }:
-      {
-        home.stateVersion = "25.05";
+  home-manager.users.basnijholt =
+    { pkgs, config, ... }:
+    {
+      home.stateVersion = "25.05";
 
-        # --- Mechabar Dependencies ---
-        home.packages = with pkgs; [
-          bluetui
-          bluez
-          brightnessctl
-          pipewire
-          wireplumber
-          rofi-wayland
-        ];
-      };
-  };
+      # --- Mechabar Dependencies ---
+      home.packages = with pkgs; [
+        bluetui
+        bluez
+        brightnessctl
+        pipewire
+        wireplumber
+        rofi-wayland
+      ];
+    };
 
   # The system state version is critical and should match the installed NixOS release.
   system.stateVersion = "25.05";
