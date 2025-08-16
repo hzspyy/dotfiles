@@ -225,7 +225,7 @@ in
           metalSupport = false;
         }).overrideAttrs
           (oldAttrs: rec {
-            version = "6150";
+            version = "6181";
             src = pkgs.fetchFromGitHub {
               owner = "ggml-org";
               repo = "llama.cpp";
@@ -369,8 +369,8 @@ in
 
   # GPT-OSS chat template directly from HuggingFace
   environment.etc."llama-templates/openai-gpt-oss-20b.jinja".source = pkgs.fetchurl {
-    url = "https://huggingface.co/openai/gpt-oss-20b/resolve/main/chat_template.jinja";
-    sha256 = "sha256-pMmRnLvUrN1RzP/iLaBJJksbc+WQVfpYgRqZ7718gUY=";
+    url = "https://huggingface.co/unsloth/gpt-oss-20b-GGUF/resolve/main/template";
+    sha256 = "sha256-UUaKD9kBuoWITv/AV6Nh9t0z5LPJnq1F8mc9L9eaiUM=";
   };
 
   environment.etc."llama-swap/config.yaml".text = ''
@@ -455,6 +455,7 @@ in
           --main-gpu 0
           --jinja
           --chat-template-file /etc/llama-templates/openai-gpt-oss-20b.jinja
+          --reasoning-format auto
           --flash-attn
           --cont-batching
           --no-mmap
