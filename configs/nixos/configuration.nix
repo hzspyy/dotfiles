@@ -644,6 +644,7 @@ in
     vscode
 
     # CLI Power Tools & Utilities
+    act
     asciinema
     atuin
     azure-cli
@@ -658,6 +659,7 @@ in
     gemini-cli
     gh
     git
+    git-filter-repo
     git-lfs
     git-secret
     gnugrep
