@@ -167,6 +167,8 @@ in
   # --- Hostname & Networking ---
   networking.hostName = "nixos";
   networking.networkmanager.enable = true;
+  # Use Technitium DNS (192.168.1.4) as primary, Tailscale as fallback
+  networking.nameservers = [ "192.168.1.4" "100.100.100.100" ];
   networking.firewall.allowedTCPPorts = [
     10200 # Wyoming Piper
     10300 # Wyoming Faster Whisper - English
@@ -652,6 +654,7 @@ in
     btop
     claude-code
     coreutils
+    dnsutils  # Provides dig, nslookup, host
     duf
     eza
     fastfetch
