@@ -375,6 +375,12 @@ theme "gruvbox-dark"
 // Path to the default editor to use to edit pane scrollbuffer
 // Default: $EDITOR or $VISUAL
 // scrollback_editor "/usr/bin/vim"
+
+// SSH agent forwarding environment variables
+env {
+    SSH_AUTH_SOCK "$SSH_AUTH_SOCK"
+    SSH_AGENT_PID "$SSH_AGENT_PID"
+}
  
 // A fixed name to always give the Zellij session.
 // Consider also setting `attach_to_session true,`
