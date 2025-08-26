@@ -206,9 +206,8 @@ in
     allowUnfree = true;
     cudaSupport = true;
     packageOverrides = pkgs: {
-      # Override ollama to version 0.11.0 with auto-calculated hash
       ollama = pkgs.ollama.overrideAttrs (oldAttrs: rec {
-        version = "0.11.4";
+        version = "0.11.7";
         src = pkgs.fetchFromGitHub {
           owner = "ollama";
           repo = "ollama";
@@ -227,7 +226,7 @@ in
           metalSupport = false;
         }).overrideAttrs
           (oldAttrs: rec {
-            version = "6249";
+            version = "6292";
             src = pkgs.fetchFromGitHub {
               owner = "ggml-org";
               repo = "llama.cpp";
