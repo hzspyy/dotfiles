@@ -732,6 +732,7 @@ in
     (python3.withPackages (ps: [ ps.pipx ]))
     rust-analyzer
     winetricks
+    yarn
 
     # Terminals & Linux-native Alternatives
     alacritty
