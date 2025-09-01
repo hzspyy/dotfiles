@@ -181,6 +181,7 @@ in
     8009 # Synapse
     8448 # Synapse
     9292 # llama-swap proxy
+    8080 # element
   ];
 
   # --- Nix Package Manager Settings ---
@@ -665,6 +666,7 @@ in
     bat
     btop
     claude-code
+    codex
     coreutils
     dnsutils  # Provides dig, nslookup, host
     duf
@@ -717,6 +719,7 @@ in
     zellij
 
     # Development Toolchains
+    bun
     cargo
     cmake
     cudatoolkit
