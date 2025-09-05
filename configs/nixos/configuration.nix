@@ -682,6 +682,7 @@ in
     gnugrep
     gnupg
     gnused
+    hcloud
     htop
     iperf3
     jq
@@ -701,6 +702,7 @@ in
     parallel
     pavucontrol
     pinentry-gnome3
+    postgresql
     psmisc # For killall
     pulseaudio
     pwgen
