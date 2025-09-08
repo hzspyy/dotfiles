@@ -705,6 +705,7 @@ in
     nmap
     nvtopPackages.full
     ollama
+    packer
     parallel
     pavucontrol
     pinentry-gnome3
