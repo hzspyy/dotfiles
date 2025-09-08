@@ -167,8 +167,14 @@ in
   # --- Hostname & Networking ---
   networking.hostName = "nixos";
   networking.networkmanager.enable = true;
-  # Use Technitium DNS (192.168.1.4) as primary, Tailscale as fallback
-  networking.nameservers = [ "192.168.1.4" "100.100.100.100" ];
+  # Use systemd-resolved with local DNS server for .local domains
+  services.resolved = {
+    enable = true;
+    domains = [ "~local" ];  # Route .local queries to our DNS
+    extraConfig = ''
+      DNS=192.168.1.4 100.100.100.100
+    '';
+  };
   networking.firewall.allowedTCPPorts = [
     10200 # Wyoming Piper
     10300 # Wyoming Faster Whisper - English
