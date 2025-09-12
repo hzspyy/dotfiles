@@ -699,6 +699,7 @@ in
     jq
     just
     keyd
+    lazydocker
     lazygit
     libnotify
     llama-cpp
