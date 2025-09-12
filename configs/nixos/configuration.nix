@@ -167,10 +167,9 @@ in
   # --- Hostname & Networking ---
   networking.hostName = "nixos";
   networking.networkmanager.enable = true;
-  # Use systemd-resolved with local DNS server for .local domains
+  # Use systemd-resolved with local DNS server as primary
   services.resolved = {
     enable = true;
-    domains = [ "~local" ];  # Route .local queries to our DNS
     extraConfig = ''
       DNS=192.168.1.4 100.100.100.100
     '';
