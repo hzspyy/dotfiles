@@ -213,7 +213,7 @@ in
     cudaSupport = true;
     packageOverrides = pkgs: {
       ollama = pkgs.ollama.overrideAttrs (oldAttrs: rec {
-        version = "0.11.7";
+        version = "0.11.10";
         src = pkgs.fetchFromGitHub {
           owner = "ollama";
           repo = "ollama";
@@ -232,7 +232,7 @@ in
           metalSupport = false;
         }).overrideAttrs
           (oldAttrs: rec {
-            version = "6292";
+            version = "6442";
             src = pkgs.fetchFromGitHub {
               owner = "ggml-org";
               repo = "llama.cpp";
@@ -251,8 +251,8 @@ in
         mkdir -p $out/bin
         tar -xzf ${
           pkgs.fetchurl {
-            url = "https://github.com/mostlygeek/llama-swap/releases/download/v150/llama-swap_150_linux_amd64.tar.gz";
-            hash = "sha256-NKXN2zM8qjBYBgkhQ78obUiMZCFNcW2av3fJNJrFm2Y=";
+            url = "https://github.com/mostlygeek/llama-swap/releases/download/v158/llama-swap_158_linux_amd64.tar.gz";
+            hash = "sha256-7NOnVRbbTRfeRMyX+vqtkE+krXQYMY05V2E608Af4QE=";
           }
         } -C $out/bin
         chmod +x $out/bin/llama-swap
