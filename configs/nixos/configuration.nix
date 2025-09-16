@@ -157,7 +157,7 @@ in
 
   # 4.  Tell systemd to hard‑reboot if the watchdog isn’t pinged for 120 s
   systemd.settings.Manager = {
-    RuntimeWatchdogSec = 120;
+    RuntimeWatchdogSec = 300;
   };
 
   # 5.  Tell the NVIDIA driver *not* to preserve (and thus remap) VRAM
