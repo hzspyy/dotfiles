@@ -170,6 +170,7 @@
       "universal-media-server" # Media server
       "visual-studio-code" # Code editor
       "vlc" # Media player
+      "wezterm" # Terminal emulator
     ]
     ++ (
       if config.isPersonal then
