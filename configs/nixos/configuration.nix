@@ -214,7 +214,7 @@ in
     cudaSupport = true;
     packageOverrides = pkgs: {
       ollama = pkgs.ollama.overrideAttrs (oldAttrs: rec {
-        version = "0.11.10";
+        version = "0.12.0";
         src = pkgs.fetchFromGitHub {
           owner = "ollama";
           repo = "ollama";
@@ -233,7 +233,7 @@ in
           metalSupport = false;
         }).overrideAttrs
           (oldAttrs: rec {
-            version = "6442";
+            version = "6521";
             src = pkgs.fetchFromGitHub {
               owner = "ggml-org";
               repo = "llama.cpp";
