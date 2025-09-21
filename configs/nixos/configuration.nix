@@ -68,6 +68,7 @@ in
     };
   };
   boot.loader.efi.canTouchEfiVariables = true;
+  boot.loader.efi.efiSysMountPoint = "/boot2";
 
   # ===================================
   # Hardware Configuration
@@ -545,6 +546,7 @@ in
     enable = true;
     voice = "en-us-ryan-high";
     uri = "tcp://0.0.0.0:10200";
+    useCUDA = true;
   };
   services.wyoming.openwakeword = {
     enable = true;
@@ -814,7 +816,7 @@ in
         brightnessctl
         pipewire
         wireplumber
-        rofi-wayland
+        rofi
       ];
 
       # Tell npm to install "global" packages into ~/.npm-global
