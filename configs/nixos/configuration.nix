@@ -699,6 +699,7 @@ in
     iperf3
     jq
     just
+    k9s
     keyd
     lazydocker
     lazygit
