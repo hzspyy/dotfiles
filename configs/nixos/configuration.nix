@@ -93,6 +93,8 @@ in
     }
   ];
 
+  services.fstrim.enable = true;
+
   # --- Ensure WiFi stays up ---
   networking.networkmanager.settings."connection" = {
     "wifi.powersave" = 2;
@@ -167,6 +169,14 @@ in
   # --- Hostname & Networking ---
   networking.hostName = "nixos";
   networking.networkmanager.enable = true;
+  networking.extraHosts = ''
+    127.0.0.1 mindroom.lan api.mindroom.lan
+    127.0.0.1 s1.mindroom.lan api.s1.mindroom.lan
+    127.0.0.1 s2.mindroom.lan api.s2.mindroom.lan
+    127.0.0.1 s3.mindroom.lan api.s3.mindroom.lan
+    127.0.0.1 s4.mindroom.lan api.s4.mindroom.lan
+    127.0.0.1 s5.mindroom.lan api.s5.mindroom.lan
+  '';
   # Use systemd-resolved with local DNS server for .local domains
   services.resolved = {
     enable = true;
