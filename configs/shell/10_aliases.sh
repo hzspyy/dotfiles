@@ -34,6 +34,9 @@ if [[ $- == *i* ]]; then
     fi
 
     if [[ `hostname` == 'nixos' ]]; then
-        alias nixswitch='sudo cp ~/dotfiles/configs/nixos/*.nix /etc/nixos/; sudo nixos-rebuild switch --flake /etc/nixos#nixos --upgrade-all; cp /etc/nixos/flake.lock ~/dotfiles/configs/nixos/'
+        # Regular rebuild without updating packages
+        alias nixswitch='sudo nixos-rebuild switch --flake ~/dotfiles/configs/nixos#nixos'
+        # Explicitly update all flake inputs and rebuild
+        alias nixupdate='cd ~/dotfiles/configs/nixos && nix flake update && sudo nixos-rebuild switch --flake .#nixos && cd -'
     fi
 fi
