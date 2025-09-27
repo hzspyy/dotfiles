@@ -217,6 +217,12 @@ in
       DNS=192.168.1.4 100.100.100.100
     '';
   };
+  networking.firewall.checkReversePath = false;
+  # NOTE: Kind’s pod network (10.244.0.0/16) changes host bridge names every time the
+  #       cluster is rebuilt, so NixOS’ reverse-path filter would keep dropping pod→host
+  #       packets unless we constantly refresh a matching route. Disabling the check
+  #       here prevents rpfilter from black-holing inter-node traffic whenever kind
+  #       recreates its Docker network.
   networking.firewall.allowedTCPPorts = [
     10200 # Wyoming Piper
     10300 # Wyoming Faster Whisper - English
@@ -230,6 +236,8 @@ in
     8448 # Synapse
     9292 # llama-swap proxy
     8080 # element
+    30080 # mindroom ingress http (kind)
+    30443 # mindroom ingress https (kind)
   ];
 
   # --- Nix Package Manager Settings ---
