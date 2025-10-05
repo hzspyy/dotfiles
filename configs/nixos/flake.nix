@@ -22,7 +22,7 @@
         inherit system;
         modules = [
           disko.nixosModules.disko
-          ./disko-new-ssd.nix
+          ./4tb-ssd.nix
           ./configuration.nix
           home-manager.nixosModules.home-manager
           {
@@ -32,6 +32,6 @@
         ];
       };
 
-      diskoConfigurations.nvme1 = import ./disko-new-ssd.nix;
+      diskoConfigurations.nvme1 = import ./4tb-ssd.nix;
     };
 }
