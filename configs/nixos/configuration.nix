@@ -385,6 +385,17 @@ in
   programs.zsh.enable = true;
   programs.direnv.enable = true;
 
+  # Run Atuins history daemon using existing ~/.config/atuin/config.toml
+  systemd.user.services."atuin-daemon" = {
+    description = "Atuin history daemon";
+    wantedBy = [ "default.target" ];
+    serviceConfig = {
+      ExecStart = "${pkgs.atuin}/bin/atuin daemon";
+      Environment = [ "ATUIN_CONFIG=/home/basnijholt/.config/atuin/config.toml" ];
+      Restart = "on-failure";
+    };
+  };
+
   # --- SSH ---
   services.openssh = {
     enable = true;
@@ -890,6 +901,7 @@ in
       home.activation.ensureNpmGlobalDir = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
         mkdir -p "${config.home.homeDirectory}/.npm-global"
       '';
+
     };
 
   # The system state version is critical and should match the installed NixOS release.
