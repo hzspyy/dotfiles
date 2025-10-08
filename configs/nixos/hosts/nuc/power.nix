@@ -9,9 +9,9 @@
     AllowHybridSleep=no
   '';
 
-  services.logind.lidSwitch = "ignore";
-  services.logind.extraConfig = ''
-    HandlePowerKey=ignore
-    IdleAction=ignore
-  '';
+  services.logind.settings.Login = {
+    HandleLidSwitch = "ignore";
+    HandlePowerKey = "ignore";
+    IdleAction = "ignore";
+  };
 }

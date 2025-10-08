@@ -7,16 +7,16 @@
       enable = true;
       package = pkgs.kodi.withPackages (kodiPkgs: with kodiPkgs; [
         youtube
-        emby
       ]);
     };
-    displayManager = {
-      autoLogin = {
-        enable = true;
-        user = "basnijholt";
-      };
-      defaultSession = "kodi";
+  };
+
+  services.displayManager = {
+    autoLogin = {
+      enable = true;
+      user = "basnijholt";
     };
+    defaultSession = "kodi";
   };
 
   # Xbox controller support
