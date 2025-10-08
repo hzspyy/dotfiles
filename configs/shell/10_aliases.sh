@@ -33,7 +33,7 @@ if [[ $- == *i* ]]; then
         alias pbcopy='wl-copy'  # Just because of muscle memory...
     fi
 
-    if [[ `hostname` == 'nixos' ]]; then
+    if [[ `hostname` == 'nixos' ]] || [[ `hostname` == 'nuc' ]]; then
         # Regular rebuild without updating packages
         alias nixswitch='sudo nixos-rebuild switch --flake ~/dotfiles/configs/nixos#nixos'
         # Explicitly update all flake inputs and rebuild
