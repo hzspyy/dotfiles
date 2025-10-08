@@ -15,23 +15,51 @@
 
   outputs = { self, nixpkgs, home-manager, disko, ... }:
     let
-      system = "x86_64-linux";
       lib = nixpkgs.lib;
+      system = "x86_64-linux";
+
+      commonModules = [
+        ./configuration.nix
+        home-manager.nixosModules.home-manager
+        {
+          home-manager.useGlobalPkgs = true;
+          home-manager.useUserPackages = true;
+        }
+      ];
+
+      mkHost = extraModules:
+        lib.nixosSystem {
+          inherit system;
+          modules = commonModules ++ extraModules;
+        };
+
     in {
-      nixosConfigurations.nixos = lib.nixosSystem {
-        inherit system;
-        modules = [
+      nixosConfigurations = {
+        nixos = mkHost [
           disko.nixosModules.disko
-          ./disko/4tb-ssd.nix
-          ./configuration.nix
-          home-manager.nixosModules.home-manager
-          {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-          }
+          ./hosts/pc/disko.nix
+          ./hosts/pc/hardware-configuration.nix
+          ./hosts/pc/default.nix
         ];
+
+        nuc = mkHost [
+          ./hosts/nuc/hardware-configuration.nix
+          ./hosts/nuc/default.nix
+        ];
+
+        installer = lib.nixosSystem {
+          inherit system;
+          modules = [
+            (import (nixpkgs + "/nixos/modules/installer/cd-dvd/installation-cd-minimal.nix"))
+            ./installers/iso.nix
+          ];
+        };
       };
 
-      diskoConfigurations.nvme1 = import ./disko/4tb-ssd.nix;
+      diskoConfigurations = {
+        nvme1 = (import ./hosts/pc/disko.nix) { inherit lib; };
+        nuc = (import ./hosts/nuc/disko-mount.nix) { inherit lib; };
+      };
+
     };
 }
