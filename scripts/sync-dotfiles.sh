@@ -13,6 +13,7 @@ HOSTS=(
   "docker-truenas"
   "docker-proxmox"
   "pi3"
+  "nuc"
   "dietpi"
   "pc"
 )
