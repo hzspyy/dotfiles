@@ -6,5 +6,5 @@
   networking.firewall.enable = true;
   networking.useDHCP = true;
   networking.networkmanager.enable = false;
-  networking.firewall.allowedTCPPorts = [ ];
+  networking.firewall.allowedTCPPorts = [ 8080 ]; # Kodi web interface
 }
