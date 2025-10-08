@@ -26,12 +26,12 @@ nix --extra-experimental-features 'nix-command flakes' run --refresh \
   github:nix-community/disko -- \
   --mode destroy,format,mount \
   --yes-wipe-all-disks \
-  --flake github:basnijholt/dotfiles/nuc?dir=configs/nixos#nuc
+  --flake github:basnijholt/dotfiles/main?dir=configs/nixos#nuc
 
 nixos-install \
   --root /mnt \
   --no-root-passwd \
-  --flake github:basnijholt/dotfiles/nuc?dir=configs/nixos#nuc
+  --flake github:basnijholt/dotfiles/main?dir=configs/nixos#nuc
 ```
 
 The first wipes `/dev/disk/by-id/nvme-CT4000P3PSSD8_2344E884093A`, recreates the GPT/Btrfs layout, and mounts everything under `/mnt`. The second populates `/mnt` with the `nuc` configuration; once it finishes, reboot into the freshly installed system.
