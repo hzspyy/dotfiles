@@ -33,10 +33,13 @@ if [[ $- == *i* ]]; then
         alias pbcopy='wl-copy'  # Just because of muscle memory...
     fi
 
-    if [[ `hostname` == 'nixos' ]] || [[ `hostname` == 'nuc' ]]; then
-        # Regular rebuild without updating packages
-        alias nixswitch='sudo nixos-rebuild switch --flake ~/dotfiles/configs/nixos#nixos'
-        # Explicitly update all flake inputs and rebuild
-        alias nixupdate='cd ~/dotfiles/configs/nixos && nix flake update && sudo nixos-rebuild switch --flake .#nixos && cd -'
-    fi
+    nixswitch() {
+        local host=${1:-$(hostname)}
+        sudo nixos-rebuild switch --flake ~/dotfiles/configs/nixos#$host
+    }
+    
+    nixupdate() {
+        local host=${1:-$(hostname)}
+        cd ~/dotfiles/configs/nixos && nix flake update && sudo nixos-rebuild switch --flake .#$host && cd -
+    }
 fi
