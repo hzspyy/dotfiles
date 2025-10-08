@@ -1,4 +1,5 @@
 {
   "includeCoAuthoredBy": false,
-  "model": "opus"
+  "model": "claude-sonnet-4-5@20250929",
+  "alwaysThinkingEnabled": true
 }
