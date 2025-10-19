@@ -43,4 +43,8 @@
     30080 # mindroom ingress http (kind)
     30443 # mindroom ingress https (kind)
   ];
+
+  networking.firewall.allowedUDPPortRanges = [
+    { from = 60000; to = 61000; } # mosh
+  ];
 }

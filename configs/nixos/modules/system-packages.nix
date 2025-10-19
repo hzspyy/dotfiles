@@ -48,6 +48,7 @@ let
     libnotify
     lm_sensors
     lsof
+    mosh
     micro
     neovim
     nixfmt-rfc-style
