@@ -178,7 +178,6 @@
 
   services.wyoming.openwakeword = {
     enable = true;
-    preloadModels = [ "alexa" "hey_jarvis" "ok_nabu" ];
     uri = "tcp://0.0.0.0:10400";
   };
 
