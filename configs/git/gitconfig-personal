@@ -8,5 +8,3 @@
 	repo = ~/dotfiles/pipefunc/src
 [safe]
 	directory = /opt/stacks
-[url "git@github.com:"]
-	insteadOf = https://github.com/
