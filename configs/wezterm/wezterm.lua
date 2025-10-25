@@ -38,6 +38,131 @@ local pane_border_active_color = '#fab387'      -- Gruvbox orange for active pan
 local pane_border_inactive_color = '#45403d'    -- Gruvbox dark gray for inactive borders
 
 
+-- Helper utilities to resolve Command+Click file links without a ton of boilerplate
+local function shell_quote(arg)
+  return string.format("'%s'", tostring(arg or ''):gsub("'", "'\\''"))
+end
+
+local function uri_to_path(value)
+  if value == nil then
+    return ''
+  end
+
+  if type(value) == 'table' then
+    value = value.file_path or value.path or value.uri
+  elseif type(value) == 'userdata' then
+    local ok, result = pcall(function()
+      return value.file_path or value.path
+    end)
+    value = ok and result or tostring(value)
+  end
+
+  value = tostring(value or '')
+
+  if value:match('^file://') then
+    value = value:gsub('^file://', '')
+
+    if value:sub(1, 1) ~= '/' then
+      local slash = value:find('/')
+      value = slash and value:sub(slash) or ''
+    end
+
+    if value == '' then
+      value = '/'
+    end
+  end
+
+  return value
+end
+
+local function pane_cwd(pane)
+  if not pane then
+    return ''
+  end
+  local cwd = uri_to_path(pane:get_current_working_dir())
+  return cwd:gsub('/+$', '')
+end
+
+local function normalize_path(path)
+  if not path or path == '' then
+    return path
+  end
+
+  local is_absolute = path:sub(1, 1) == '/'
+  local parts = {}
+  for part in path:gmatch('[^/]+') do
+    if part == '.' then
+      -- skip
+    elseif part == '..' then
+      if #parts > 0 and parts[#parts] ~= '..' then
+        table.remove(parts)
+      elseif not is_absolute then
+        table.insert(parts, '..')
+      end
+    else
+      table.insert(parts, part)
+    end
+  end
+
+  local normalized = table.concat(parts, '/')
+  if is_absolute then
+    return '/' .. normalized
+  end
+  return normalized ~= '' and normalized or (is_absolute and '/' or '.')
+end
+
+local function resolve_path(pane, raw)
+  if not raw or raw == '' then
+    return raw
+  end
+
+  local path = raw:gsub('^file://', '')
+  if path:sub(1, 1) == '~' then
+    path = (os.getenv('HOME') or '') .. path:sub(2)
+  elseif path:sub(1, 1) ~= '/' then
+    local cwd = pane_cwd(pane)
+    if cwd ~= '' then
+      path = cwd .. '/' .. path
+    end
+  end
+
+  return normalize_path(path)
+end
+
+local function parse_location(uri)
+  local path, line, col = uri:match('^(.*):(%d+):(%d+)$')
+  if not path then
+    path, line = uri:match('^(.*):(%d+)$')
+  end
+  return path or uri, line, col
+end
+
+local function build_editor_command(path, line, col)
+  local tokens = {}
+  local command_string = default_editor .. ' ' .. editor_flags
+  for token in command_string:gmatch('%S+') do
+    table.insert(tokens, token)
+  end
+
+  if line then
+    table.insert(tokens, '-g')
+    table.insert(tokens, string.format('%s:%s%s', path, line, col and ':' .. col or ''))
+  else
+    table.insert(tokens, path)
+  end
+
+  local quoted = {}
+  for _, token in ipairs(tokens) do
+    table.insert(quoted, shell_quote(token))
+  end
+
+  local path_env = (wezterm.target_triple:find('darwin') and macos_extra_paths or linux_extra_paths)
+  path_env = string.format('%s:%s', path_env, os.getenv('PATH') or '')
+
+  return string.format('PATH=%s exec %s', shell_quote(path_env), table.concat(quoted, ' '))
+end
+
+
 -- Appearance
 -- ==========
 -- Font configuration to match iTerm2 setup
@@ -132,16 +257,20 @@ config.keys = {
   -- Text Navigation
   -- ---------------
   
-  -- Move by word: Alt + Left/Right Arrow (same as iTerm2)
+  -- Rebind OPT-Left, OPT-Right as ALT-b, ALT-f respectively to match Terminal.app behavior
+  -- from https://wezterm.org/config/lua/keyassignment/SendKey.html
   {
     key = 'LeftArrow',
-    mods = 'ALT',
-    action = wezterm.action.SendString '\x1bb',  -- Move backward one word
+    mods = 'OPT',
+    action = wezterm.action.SendKey {
+      key = 'b',
+      mods = 'ALT',
+    },
   },
   {
     key = 'RightArrow',
-    mods = 'ALT',
-    action = wezterm.action.SendString '\x1bf',  -- Move forward one word
+    mods = 'OPT',
+    action = wezterm.action.SendKey { key = 'f', mods = 'ALT' },
   },
   
   -- Selection and Clipboard
@@ -212,6 +341,13 @@ table.insert(config.hyperlink_rules, {
   highlight = 0,
 })
 
+-- Relative paths that bubble out of the current tree (../foo/bar)
+table.insert(config.hyperlink_rules, {
+  regex = [[(?:\.{1,2}/)+(?:[A-Za-z0-9._\-]+/)*[A-Za-z0-9._\-]+/?]],
+  format = 'file://$0',
+  highlight = 0,
+})
+
 -- Plain file names with extensions (for ls output)
 -- Examples: config.lua, main.py, README.md
 table.insert(config.hyperlink_rules, {
@@ -238,39 +374,17 @@ wezterm.on('open-uri', function(window, pane, uri)
     return  -- Let WezTerm handle non-file URLs
   end
   
-  -- Extract the file path from the file:// URI
-  local file_path = uri:gsub('^file://', '')
-  
-  -- Parse file path with optional line:column notation
-  local path, line, col = file_path:match('^([^:]+):?(%d*):?(%d*)$')
-  path = path or file_path
-  
-  -- Resolve the full path
-  if path:match('^~') then
-    -- Expand ~ to home directory
-    path = os.getenv('HOME') .. path:sub(2)
-  elseif not path:match('^/') then
-    -- Resolve relative paths using current working directory
-    local cwd = pane:get_current_working_dir()
-    if cwd and cwd.path then
-      path = cwd.path .. '/' .. path
-    end
+  local raw_path, line, col = parse_location(uri:gsub('^file://', ''))
+  local resolved = resolve_path(pane, raw_path)
+
+  if not resolved or resolved == '' then
+    wezterm.log_error('wezterm.lua: unable to resolve path for URI: ' .. uri)
+    return false
   end
-  
-  -- Build editor command
-  local cmd = default_editor .. ' ' .. editor_flags
-  if line and line ~= '' then
-    -- Add line:column if present
-    cmd = cmd .. string.format(' -g "%s:%s%s"', path, line, col ~= '' and ':' .. col or '')
-  else
-    cmd = cmd .. string.format(' "%s"', path)
-  end
-  
-  -- Execute with platform-specific PATH
-  local extra_paths = wezterm.target_triple:find('darwin') and macos_extra_paths or linux_extra_paths
-  local fast_cmd = string.format('export PATH="%s:$PATH"; %s', extra_paths, cmd)
-  os.execute('/bin/sh -c \'' .. fast_cmd .. '\'')
-  
+
+  local shell_cmd = build_editor_command(resolved, line, col)
+  wezterm.background_child_process({ '/bin/sh', '-lc', shell_cmd })
+
   return false  -- Prevent default action
 end)
 
