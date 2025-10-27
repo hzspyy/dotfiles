@@ -4,7 +4,7 @@ core.*
 **/.ipynb_checkpoints/*
 (?d).DS_Store
 __pycache__
-dask-worker-space
+#dask-worker-space
 .ipynb_checkpoints
 .DS_Store
 

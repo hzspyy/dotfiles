@@ -15,7 +15,7 @@
 	pager = delta
 	preloadindex = true
 	fscache = true
-	editor = nano
+	editor = vim
 	fsmonitor = false
 [gc]
 	auto = 256
@@ -41,8 +41,9 @@
 	required = true
 [http]
 	version = HTTP/1.1
-[credential "https://dev.azure.com"]
-	useHttpPath = true
+#[credential "https://dev.azure.com"]
+#	useHttpPath = true
+
 [rerere]
 	enabled = true
 	autoUpdate = true
@@ -54,5 +55,5 @@
 [delta]
 	navigate = true  # use n and N to move between diff sections
 	dark = true  # or light = true, or omit for auto-detection
-[credential "https://git.lab.nijho.lt"]
-	provider = generic
+#[credential "https://git.lab.nijho.lt"]
+#	provider = generic

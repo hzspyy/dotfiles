@@ -4,7 +4,7 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
-    nix-darwin.url = "github:LnL7/nix-darwin";
+    nix-darwin.url = "github:LnL7/nix-darwin";             # ???
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
   };
 
@@ -16,10 +16,11 @@
     }:
     {
       darwinConfigurations = {
-        "basnijholt-macbook-pro" = nix-darwin.lib.darwinSystem {
+        "Nyxri-macmini" = nix-darwin.lib.darwinSystem {
           modules = [
             ./configuration.nix
             ./homebrew.nix
+            ./homebrew-config.nix
             {
               options = {
                 isPersonal = nixpkgs.lib.mkOption {
@@ -28,21 +29,6 @@
                 };
               };
               config.isPersonal = true;
-            }
-          ];
-        };
-        "basnijholt-macbook-pro-2" = nix-darwin.lib.darwinSystem {
-          modules = [
-            ./configuration.nix
-            ./homebrew.nix
-            {
-              options = {
-                isPersonal = nixpkgs.lib.mkOption {
-                  type = nixpkgs.lib.types.bool;
-                  default = false;
-                };
-              };
-              config.isPersonal = false;
             }
           ];
         };

@@ -12,8 +12,9 @@ auto_sync = true
 ## enable or disable automatic update checks
 update_check = false
 
+#TODO: 
 ## address of the sync server
-sync_address = "https://atuin.lab.nijho.lt"
+#sync_address = "https://atuin.lab.nijho.lt"
 enter_accept = true
 
 [stats]

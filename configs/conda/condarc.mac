@@ -5,6 +5,6 @@ channels:
   - conda-forge
   - nodefaults
 pkgs_dirs:
-  - ~/.conda/pkgs    
+  - ~/nvme-cache/.conda/pkgs    
   
 channel_priority: strict

@@ -1,3 +1,5 @@
+#TODO:
+
 [defaults]
 # Ollama
 llm-ollama-model = "devstral:24b"

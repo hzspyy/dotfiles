@@ -1,0 +1,24 @@
+export XDG_CONFIG_HOME=~/.config
+#export XDG_DATA_HOME=~/.local/share
+#export XDG_STATE_HOME=~/.local/state
+
+if [[ "$OSTYPE" == darwin* ]]; then
+    export XDG_CACHE_HOME=~/nvme-cache
+elif [[ "$OSTYPE" == linux* ]]; then
+    export XDG_CACHE_HOME=~/.cache
+else
+    export XDG_CACHE_HOME=~/.cache
+fi
+
+
+ZDOTDIR=$XDG_CONFIG_HOME/zsh
+
+typeset -U fpath path  # set unique
+path=(
+    $ZDOTDIR/scripts
+    #~/.cargo/bin
+    #~/.ghcup/bin
+    #~/.cache/.bun/bin
+    #~/go/bin
+    $path
+)
