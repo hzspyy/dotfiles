@@ -40,7 +40,7 @@
       "just" # Command runner
       "keychain" # SSH/GPG key manager
       "lazygit" # Git TUI
-      "vim" # Text editor
+      #"vim" # Text editor
       "nmap" # Network scanner
       "node" # JavaScript runtime
       "ollama" # Ollama LLMs
