@@ -1,14 +1,20 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 {
   # Required for current nix-darwin
   nixpkgs.hostPlatform = "aarch64-darwin"; # for Apple Silicon
-  time.timeZone = "Asia/shanghai";
+
+
+  nix.settings.gc = {
+      automatic = lib.mkDefault true;
+      options = lib.mkDefault "--delete-older-than 7d";
+  };
 
   # Enable experimental nix command and flakes
   nix.settings.experimental-features = [
     "nix-command"
     "flakes"
   ];
+
   nix.settings.substitutions = [
     "https://mirror.sjtu.edu.cn/nix-channels/store"
     "https://nix-community.cachix.org"
@@ -18,8 +24,8 @@
     "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
   ];
 
-  builders-use-substitutes = true; 
-
+  nix.settings.builders-use-substitutes = true; 
+  #nix.settings.auto-optimise-store = false;
 
   # Add system packages
   environment.systemPackages = with pkgs; [
@@ -120,13 +126,13 @@
       FXDefaultSearchScope = "SCcf";
     };
 
-    trackpad = {
-      # Enable trackpad tap to click
-      Clicking = true;
+    #trackpad = {
+    #  # Enable trackpad tap to click
+    #  Clicking = true;
 
-      # Enable 3-finger drag
-      TrackpadThreeFingerDrag = true;
-    };
+    #  # Enable 3-finger drag
+    #  TrackpadThreeFingerDrag = true;
+    #};
 
     ActivityMonitor = {
       # Sort by CPU usage
@@ -225,8 +231,8 @@
       sudo spctl --master-disable
 
       # Change the default apps
-      duti -s com.microsoft.VSCode .txt all
-      duti -s com.microsoft.VSCode .ass all
+      #duti -s com.microsoft.VSCode .txt all
+      #duti -s com.microsoft.VSCode .ass all
       #duti -s io.mpv .mkv all
       #duti -s com.colliderli.iina .mp4 all
 

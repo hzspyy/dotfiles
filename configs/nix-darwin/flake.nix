@@ -2,8 +2,17 @@
 {
   description = "Darwin configuration";
 
+  nixConfig = {
+    substituters = [
+      # Query the mirror of USTC first, and then the official cache.
+      "https://mirrors.ustc.edu.cn/nix-channels/store"
+      "https://cache.nixos.org"
+    ];
+  };
+
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+    #nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
+    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-25.05-darwin";
     nix-darwin.url = "github:LnL7/nix-darwin";             # ???
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
   };
@@ -16,11 +25,10 @@
     }:
     {
       darwinConfigurations = {
-        "Nyxri-macmini" = nix-darwin.lib.darwinSystem {
+        "smc-mac" = nix-darwin.lib.darwinSystem {
           modules = [
             ./configuration.nix
             ./homebrew.nix
-            ./homebrew-config.nix
             {
               options = {
                 isPersonal = nixpkgs.lib.mkOption {

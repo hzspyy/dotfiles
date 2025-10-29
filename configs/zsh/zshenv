@@ -1,5 +1,4 @@
 export XDG_CONFIG_HOME=~/.config
-#export XDG_DATA_HOME=~/.local/share
 #export XDG_STATE_HOME=~/.local/state
 
 if [[ "$OSTYPE" == darwin* ]]; then
@@ -14,6 +13,7 @@ fi
 ZDOTDIR=$XDG_CONFIG_HOME/zsh
 
 typeset -U fpath path  # set unique
+
 path=(
     $ZDOTDIR/scripts
     #~/.cargo/bin

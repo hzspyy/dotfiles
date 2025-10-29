@@ -1,7 +1,4 @@
 # zmodload zsh/zprof # Uncomment for profiling
-
-source ~/dotfiles/configs/shell/40_keychain.sh
-
 # zprof # Uncomment for profiling
 
 #==========#
@@ -26,8 +23,6 @@ if [[ $OSTYPE == darwin* ]] {
 
 hash -d config=$XDG_CONFIG_HOME
 hash -d cache=$XDG_CACHE_HOME
-#hash -d data=$XDG_DATA_HOME
-#hash -d state=$XDG_STATE_HOME
 
 hash -d zdot=$ZDOTDIR
 
@@ -42,16 +37,14 @@ hash -d zdot=$ZDOTDIR
 # Plugins (Part 1) #
 #==================#
 
-#[[ -d ~zdot/.zcomet ]] || git clone https://github.com/agkozak/zcomet ~zdot/.zcomet/bin
+[[ -d ~zdot/.zcomet ]] || git clone https://github.com/agkozak/zcomet ~zdot/.zcomet/bin
 
-#source ~zdot/.zcomet/bin/zcomet.zsh
-source ~/dotfiles/submodules/zcomet/bin/zcomet.zsh
+source ~zdot/.zcomet/bin/zcomet.zsh
 
 # Update every 7 days
 _qc_last_update=(~zdot/.zcomet/update(Nm-7))
 if [[ -z $_qc_last_update ]] {
-    #touch ~zdot/.zcomet/update
-    touch ~/dotfiles/submodules/zcomet/update
+    touch ~zdot/.zcomet/update
     zcomet self-update
     zcomet update
     zcomet compile ~zdot/*.zsh  # NOTE: https://github.com/romkatv/zsh-bench#cutting-corners
@@ -139,8 +132,8 @@ _qc-complete-galias() {
     _describe 'galias' des
 }
 
-#compdef _precommand bench-mode.zsh
-#compdef _precommand lldb.zsh
+compdef _precommand bench-mode.zsh
+compdef _precommand lldb.zsh
 
 if [[ $OSTYPE == darwin* ]] {
     _qc-comp rustup completions zsh rustup
@@ -308,6 +301,7 @@ setopt hist_save_no_dups     # no duplicate in history file
 setopt hist_ignore_space     # ignore commands starting with a space
 setopt hist_reduce_blanks    # remove unnecessary spaces
 setopt hist_fcntl_lock       # use fcntl to improve locking performance
+
 HISTFILE=~zdot/.zsh_history
 HISTSIZE=1000000  # number of commands loaded
 SAVEHIST=1000000  # number of commands stored

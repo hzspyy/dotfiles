@@ -8,13 +8,13 @@
     ~/.bashrc: configs/bash/bashrc
     ~/.claude/settings.json: configs/claude/settings.json
     ~/.condarc: configs/conda/condarc
-    ~/.config/agent-cli/config.toml: configs/agent-cli/config.toml                     # TO USE
+    #~/.config/agent-cli/config.toml: configs/agent-cli/config.toml                     # TO USE
     ~/.config/atuin: configs/atuin
     ~/.config/bat/config: configs/bat/config
     ~/.config/claude/settings.json: configs/claude/settings.json
     ~/.config/codex/AGENTS.md: configs/codex/AGENTS.md
     ~/.config/codex/config.toml: configs/codex/config.toml
-    ~/.config/dotbins/config.yaml: submodules/dotbins/dotbins.yaml
+    #~/.config/dotbins/config.yaml: submodules/dotbins/dotbins.yaml
     ~/.config/gemini/settings.json: configs/gemini/settings.json
     ~/.config/git/attributes: configs/git/attributes
     ~/.config/lazygit/config.yml: configs/lazygit/config.yml
@@ -22,7 +22,7 @@
     ~/.config/starship.toml: configs/starship/starship.toml
     ~/.config/zellij/config.kdl: configs/zellij/config.kdl
     ~/.direnvrc: configs/direnv/direnvrc
-    ~/.dotbins: submodules/mydotbins
+    #~/.dotbins: submodules/mydotbins
     ~/.gitconfig-personal: configs/git/gitconfig-personal
     ~/.gitconfig: configs/git/gitconfig
     #~/.local/bin/git-fixup-file: scripts/git-fixup-file.sh
@@ -32,19 +32,21 @@
     #~/.local/bin/sync-local-dotfiles: scripts/sync-local-dotfiles.sh
     #~/.local/bin/sync-uv-tools: scripts/sync-uv-tools.sh
     #~/.local/bin/upload-file: scripts/upload-file.sh
-    ~/.local/bin/keychain: submodules/mydotbins/linux/amd64/bin/keychain
+    #~/.local/bin/keychain: submodules/mydotbins/linux/amd64/bin/keychain
     ~/.mambarc: configs/mamba/mambarc
     #~/.oh-my-zsh: submodules/oh-my-zsh
     #~/.tmux.conf: submodules/tmux/.tmux.conf
     #~/.tmux.conf.local: submodules/tmux/.tmux.conf.local
-    #~/.zshrc: configs/zsh/zshrc
+    ~/.config/zsh/.zshrc: configs/zsh/zshrc
+    ~/.zshenv: configs/zsh/zshenv
+    ~/.config/zsh/p10k.zsh: configs/zsh/p10k.zsh
 
-- shell:
-  - bash scripts/sync-uv-tools.sh
-  - git submodule sync --recursive
-  - git submodule update --init --recursive --remote
-  - command: '[[ "$(uname)" = "Darwin" ]] && [ -f ./secrets/install ] && (echo "SECRETS" && ./secrets/install) || true'
-    stdout: true
+#- shell:
+#  - bash scripts/sync-uv-tools.sh
+#  - git submodule sync --recursive
+#  - git submodule update --init --recursive --remote
+#  - command: '[[ "$(uname)" = "Darwin" ]] && [ -f ./secrets/install ] && (echo "SECRETS" && ./secrets/install) || true'
+#    stdout: true
 
 # -- Only on Linux --
 - defaults:
@@ -62,7 +64,7 @@
       relink: true
       if: '[ "$(uname)" = "Darwin" ]'
 - link:
-    ~/.gitconfig-sign: configs/git/gitconfig-sign
+    #~/.gitconfig-sign: configs/git/gitconfig-sign
     #~/.config/karabiner/karabiner.json: configs/karabiner/karabiner.json
     #~/Work/.stignore: configs/syncthing/stignore
     #~/Sync/.stignore: configs/syncthing/stignore

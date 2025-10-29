@@ -1,1 +1,1 @@
-source ~/dotfiles/configs/shell/main.sh
+source ~/dotfiles/configs/shell/00_bashrc

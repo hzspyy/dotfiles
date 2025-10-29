@@ -17,10 +17,10 @@
       "blueutil" # Bluetooth utility
       "brew-cask-completion" # Completion for brew cask
       "btop" # System monitor
-      "claude" # Claude Desktop (AI)
       "cmake" # Build system
       "coreutils" # GNU core utilities
-      "eza" # ls alternative
+      "dotbot"
+      #"eza" # ls alternative
       "ffmpeg" # Multimedia framework
       "findutils" # GNU find utilities
       "fzf" # Fuzzy finder
@@ -38,9 +38,11 @@
       "iperf3" # Network bandwidth tool v3
       "jq" # JSON processor
       "just" # Command runner
-      "keychain" # SSH/GPG key manager
+      #"keychain" # SSH/GPG key manager
+      #"kitty"
       "lazygit" # Git TUI
-      #"vim" # Text editor
+      "less"
+      "neovim"
       "nmap" # Network scanner
       "node" # JavaScript runtime
       "ollama" # Ollama LLMs
@@ -48,30 +50,33 @@
       "pwgen" # Password generator
       "rclone" # Cloud storage sync
       "rsync" # File sync tool
+      "sing-box"
       "ssh-copy-id" # SSH public key installer
       "starship" # Shell prompt
       #"superfile" # Modern terminal file manager
-      "syncthing" # File synchronization
+      #"syncthing" # File synchronization
       "tailscale" # VPN service
       "tealdeer" # Fast alternative to tldr
-      "terraform" # Infrastructure as code
+      #"terraform" # Infrastructure as code
       "tmux" # Terminal multiplexer
-      "tre-command" # Tree command, improved
+      #"tre-command" # Tree command, improved
       "tree" # Directory listing
+      "vim"
       "wget" # File downloader
       "yq" # YAML processor
+      "yazi"
       "zsh" # Shell
     ];
 
     # GUI Applications (Casks)
     casks = [
       "1password-cli" # 1Password CLI
-      "avast-security" # Antivirus
+      #"avast-security" # Antivirus
       "chromedriver" # Chrome automation
       "docker" # Container platform
       "font-fira-code" # Programming font
       "font-fira-mono-nerd-font" # Nerd font
-      "git-credential-manager" # Git credential helper
+      #"git-credential-manager" # Git credential helper
       "iterm2" # Terminal emulator
       #"karabiner-elements" # Keyboard customizer
       "keepingyouawake" # Prevent sleep
@@ -84,9 +89,9 @@
       "slack" # Slack chat
       #"sloth" # Process monitor
       #"spotify" # Music streaming
-      "syncthing" # File synchronization
+      #"syncthing" # File synchronization
       #"teamviewer" # Remote control
-      "telegram" # Messenger
+      #"telegram" # Messenger
       #"tor-browser" # Private browser
       "visual-studio-code" # Code editor
     ]
