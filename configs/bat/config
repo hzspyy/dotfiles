@@ -2,3 +2,4 @@
 # run `bat --help` to get a list of all possible configuration options.
 
 --theme="gruvbox-dark"
+#--theme="OneHalfDark"

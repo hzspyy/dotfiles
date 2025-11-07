@@ -1,5 +1,4 @@
 export XDG_CONFIG_HOME=~/.config
-#export XDG_STATE_HOME=~/.local/state
 
 if [[ "$OSTYPE" == darwin* ]]; then
     export XDG_CACHE_HOME=~/nvme-cache
@@ -15,10 +14,35 @@ ZDOTDIR=$XDG_CONFIG_HOME/zsh
 typeset -U fpath path  # set unique
 
 path=(
-    $ZDOTDIR/scripts
-    #~/.cargo/bin
-    #~/.ghcup/bin
-    #~/.cache/.bun/bin
+    #$ZDOTDIR/scripts
     #~/go/bin
     $path
 )
+
+
+
+# Software specific
+export EDITOR="vim"
+export VISUAL="vim"
+#export BAT_THEME="Catppuccin Mocha"
+#export HOMEBREW_NO_ANALYTICS=1
+#export HOMEBREW_DOWNLOAD_CONCURRENCY=8
+#export LESSKEYIN=$HOME/.config/less/.lesskey
+#export LESSHISTFILE=$HOME/.config/less/.lesshst
+#export FZF_DEFAULT_COMMAND="fd $__FD_COMMAND"
+#export FZF_DEFAULT_OPTS="
+#--reverse --ansi
+#--bind=ctrl-u:up,ctrl-e:down,ctrl-n:backward-char,ctrl-i:forward-char,ctrl-b:backward-word,ctrl-h:forward-word,tab:toggle+down,shift-tab:toggle+up,ctrl-a:select-all,ctrl-r:toggle-all
+#--border --scrollbar=▌"
+
+export LESS='--quit-if-one-screen --RAW-CONTROL-CHARS --chop-long-lines'
+
+export FZF_DEFAULT_OPTS='--ansi --height=60% --reverse --cycle --bind=tab:accept'
+
+export MANPAGER='sh -c "col -bx | bat -pl man --theme=Monokai\ Extended"'
+export MANROFFOPT='-c'
+export MOLD_JOBS=1
+
+
+# clean up
+# unset

@@ -20,7 +20,9 @@
       "cmake" # Build system
       "coreutils" # GNU core utilities
       "dotbot"
-      #"eza" # ls alternative
+      "eza" # ls alternative
+      "dust"
+      "fd"
       "ffmpeg" # Multimedia framework
       "findutils" # GNU find utilities
       "fzf" # Fuzzy finder
@@ -34,14 +36,15 @@
       "go" # Go programming language
       "graphviz" # Graph visualization
       "grep" # GNU grep
+      "hyperfine" 
+      "httpie"
       "htop" # Process viewer
       "iperf3" # Network bandwidth tool v3
       "jq" # JSON processor
       "just" # Command runner
-      #"keychain" # SSH/GPG key manager
-      #"kitty"
       "lazygit" # Git TUI
       "less"
+      "nali" 
       "neovim"
       "nmap" # Network scanner
       "node" # JavaScript runtime
@@ -49,22 +52,23 @@
       "pipx" # Python app installer
       "pwgen" # Password generator
       "rclone" # Cloud storage sync
+      "ripgrep"
       "rsync" # File sync tool
       "sing-box"
       "ssh-copy-id" # SSH public key installer
       "starship" # Shell prompt
-      #"superfile" # Modern terminal file manager
-      #"syncthing" # File synchronization
       "tailscale" # VPN service
       "tealdeer" # Fast alternative to tldr
       #"terraform" # Infrastructure as code
       "tmux" # Terminal multiplexer
       #"tre-command" # Tree command, improved
       "tree" # Directory listing
+      "tree-sitter"
       "vim"
       "wget" # File downloader
       "yq" # YAML processor
       "yazi"
+      "zoxide"
       "zsh" # Shell
     ];
 
@@ -77,19 +81,23 @@
       "font-fira-code" # Programming font
       "font-fira-mono-nerd-font" # Nerd font
       #"git-credential-manager" # Git credential helper
-      "iterm2" # Terminal emulator
+      #"iterm2" # Terminal emulator
       #"karabiner-elements" # Keyboard customizer
+      "kitty"
       "keepingyouawake" # Prevent sleep
       #"keyboard-maestro" # Automation tool
       #"mpv" # Media player
       #"obsidian" # Note taking app
+      "parsec"
       #"qbittorrent" # Torrent client
       "raycast" # Productivity tool
       #"rectangle" # Window manager
+      "sfm"
       "slack" # Slack chat
       #"sloth" # Process monitor
       #"spotify" # Music streaming
       #"syncthing" # File synchronization
+      "tailscale"
       #"teamviewer" # Remote control
       #"telegram" # Messenger
       #"tor-browser" # Private browser

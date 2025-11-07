@@ -1,0 +1,15 @@
+# Send heartbeat every 60s when idle to keep alive
+#ControlMaster auto
+#ControlPath /tmp/SSH-%C
+#ControlPersist 720
+#ServerAliveInterval 60
+#ServerAliveCountMax 3
+#AddKeysToAgent yes
+#StrictHostKeyChecking no
+#PreferredAuthentications=publickey
+#
+# Ref: https://docs.github.com/en/authentication/troubleshooting-ssh/using-ssh-over-the-https-port
+Host github.com
+    Hostname ssh.github.com
+    Port 443
+    User git

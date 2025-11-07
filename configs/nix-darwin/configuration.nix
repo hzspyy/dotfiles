@@ -82,22 +82,18 @@
     };
 
     dock = {
-      # Set icon size and dock orientation
-      #tilesize = 48;
-      #orientation = "left";
-
       # Set dock to auto-hide, and transparentize icons of hidden apps (⌘H)
       autohide = true;
       showhidden = true;
 
       # Set the animation time modifier (0.0 = instant)
-      #autohide-time-modifier = 0.0;
+      autohide-time-modifier = 0.0;
 
       # Disable to show recents, and light-dot of running apps
       show-recents = false;
       show-process-indicators = false;
-      wvous-tr-corner = 13;  # top-right - Lock Screen
-      wvous-br-corner = 4;  # bottom-right - Desktop
+      #wvous-tr-corner = 13;  # top-right - Lock Screen
+      #wvous-br-corner = 4;  # bottom-right - Desktop
       #wvous-tl-corner = 2;  # top-left - Mission Control
       #wvous-bl-corner = 3;  # bottom-left - Application Windows
     };
@@ -110,8 +106,8 @@
       FXEnableExtensionChangeWarning = false;
 
       # Show all files and their extensions
-      AppleShowAllExtensions = true;
-      AppleShowAllFiles = true;
+      #AppleShowAllExtensions = true;
+      #AppleShowAllFiles = true;
 
       # Show path bar, and layout as multi-column
       ShowPathbar = true;
@@ -148,7 +144,7 @@
     CustomSystemPreferences = {
       NSGlobalDomain = {
         # Set the system accent color, TODO: https://github.com/LnL7/nix-darwin/pull/230
-        AppleAccentColor = 6;
+        #AppleAccentColor = 6;
         # Jump to the spot that's clicked on the scroll bar, TODO: https://github.com/LnL7/nix-darwin/pull/672
         AppleScrollerPagingBehavior = true;
         # Prefer tabs when opening documents, TODO: https://github.com/LnL7/nix-darwin/pull/673
@@ -243,7 +239,7 @@
   security.pam.services.sudo_local.touchIdAuth = true;
 
   # Create /etc/zshrc that loads the nix-darwin environment.
-  programs.zsh.enable = true;
+  #programs.zsh.enable = true;
 
   # Auto upgrade nix package and the daemon service.
   nix.package = pkgs.nix;
