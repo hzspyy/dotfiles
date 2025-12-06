@@ -68,7 +68,7 @@
     command: |
       if [ -f /etc/debian_version ]; then
         echo "Detected Debian/Ubuntu system."
-        sudo bash ubuntu/install_packages.sh
+        sudo bash configs/buntu/install_packages.sh
       else
         echo "Not Ubuntu, skipping package installation."
       fi

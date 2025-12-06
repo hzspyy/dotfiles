@@ -17,7 +17,7 @@ fi
 
 echo -e "${BLUE}📦 Updating apt cache and installing base dependencies...${NC}"
 apt-get update
-apt-get install -y curl wget git build-essential gPG software-properties-common unzip vim
+apt-get install -y curl wget git build-essential gpg software-properties-common unzip vim
 
 # ==============================================================================
 # 1. 配置第三方源 (许多现代工具不在默认源里)
