@@ -159,3 +159,39 @@ bindkey -M viopp "iw" select-in-word
 bindkey -M viopp "iW" select-in-blank-word
 bindkey -M viopp "ii" select-in-shell-word
 
+
+
+
+# =======================================================
+# Word Navigation Widgets (子词逻辑)
+# =======================================================
+qc-word-widgets() {
+    # 匹配规则：单词字符、空白字符、或符号
+    local wordpat='[[:WORD:]]##|[[:space:]]##|[^[:WORD:][:space:]]##'
+    
+    # 核心移动逻辑
+    case $WIDGET {
+        (*sub-l)   local move=-${(N)LBUFFER%%$~wordpat} ;; # 向左一个子词
+        (*sub-r)   local move=+${(N)RBUFFER##$~wordpat} ;; # 向右一个子词
+    }
+    
+    # 执行移动或删除
+    case $WIDGET {
+        (*kill*) (( MARK = CURSOR + move )); zle -f kill; zle .kill-region ;;
+        (*)      (( CURSOR += move )) ;;
+    }
+}
+
+# 注册 Widget
+for w in qc{,-kill}-sub-{l,r}; zle -N $w qc-word-widgets
+
+# =======================================================
+# Bindings (Alt + h/l)
+# =======================================================
+# 说明：^[ 代表 Alt/Option 键 (Escape 序列)
+# 如果你是 macOS 且没开 "Option as Meta"，可能需要改为绑定特殊字符(如 ˙ 和 ¬)
+
+# 1. 插入模式 (Insert Mode)
+bindkey -M viins "^[h" qc-sub-l   # Alt + h => 向左一词
+bindkey -M viins "^[l" qc-sub-r   # Alt + l => 向右一词
+

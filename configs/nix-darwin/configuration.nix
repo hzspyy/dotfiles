@@ -3,34 +3,44 @@
   # Required for current nix-darwin
   nixpkgs.hostPlatform = "aarch64-darwin"; # for Apple Silicon
 
+  # Used for backwards compatibility, please read the changelog before changing.
+  # $ darwin-rebuild changelog
+  system.stateVersion = 5;
 
-  nix.settings.gc = {
+  # --- Nix Settings ---
+  nix.settings = {
+    # 开启自动 GC，每周清理旧文件
+    gc = {
       automatic = lib.mkDefault true;
       options = lib.mkDefault "--delete-older-than 7d";
+    };
+    
+    experimental-features = [ "nix-command" "flakes" ];
+
+    
+    substitutions = [
+      "https://mirror.sjtu.edu.cn/nix-channels/store"
+      "https://nix-community.cachix.org"
+    ];
+    
+    trusted-public-keys = [
+      "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+    ];
+    
+    builders-use-substitutes = true;
   };
 
-  # Enable experimental nix command and flakes
-  nix.settings.experimental-features = [
-    "nix-command"
-    "flakes"
-  ];
+  # Auto upgrade nix package and the daemon service.
+  nix.package = pkgs.nix;
 
-  nix.settings.substitutions = [
-    "https://mirror.sjtu.edu.cn/nix-channels/store"
-    "https://nix-community.cachix.org"
-  ];
-
-  nix.settings.trusted-public-keys = [
-    "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
-  ];
-
-  nix.settings.builders-use-substitutes = true; 
-  #nix.settings.auto-optimise-store = false;
+  nix.enable = false;
 
   # Add system packages
   environment.systemPackages = with pkgs; [
     nixpkgs-fmt
   ];
+
+  programs.zsh.enable = false;
 
   # Configure sudo password timeout (in minutes)
   security.sudo.extraConfig = ''
@@ -38,9 +48,7 @@
     Defaults timestamp_timeout=60
   '';
 
-  # Used for backwards compatibility, please read the changelog before changing.
-  # $ darwin-rebuild changelog
-  system.stateVersion = 5;
+  #TODO: chang the nix  cache dir to $HOME/nvme-cache/nix
 
   # Keyboard
   system.keyboard.enableKeyMapping = true;
@@ -56,8 +64,8 @@
 
       # Enable press-and-hold repeating
       ApplePressAndHoldEnabled = false;
-      InitialKeyRepeat = 10;  # normal minimum is 15 (225 ms), maximum is 120 (1800 ms)
-      KeyRepeat = 1;   # normal minimum is 2 (30 ms), maximum is 120 (1800 ms
+      InitialKeyRepeat = 20;  # normal minimum is 15 (225 ms), maximum is 120 (1800 ms)
+      KeyRepeat = 2;   # normal minimum is 2 (30 ms), maximum is 120 (1800 ms
 
       # Disable "Natural" scrolling
       "com.apple.swipescrolldirection" = false;
@@ -106,14 +114,13 @@
       FXEnableExtensionChangeWarning = false;
 
       # Show all files and their extensions
-      #AppleShowAllExtensions = true;
-      #AppleShowAllFiles = true;
+      AppleShowAllExtensions = false;
+      AppleShowAllFiles = false;
 
       # Show path bar, and layout as multi-column
       ShowPathbar = true;
 
-      #_FXShowPosixPathInTitle = true;  # show full path in finder title
-
+      _FXShowPosixPathInTitle = true;  # show full path in finder title
 
       #ShowStatusBar = true;  # show status bar
       FXPreferredViewStyle = "clmv";
@@ -238,11 +245,5 @@
   # Add ability to used TouchID for sudo
   security.pam.services.sudo_local.touchIdAuth = true;
 
-  # Create /etc/zshrc that loads the nix-darwin environment.
-  #programs.zsh.enable = true;
 
-  # Auto upgrade nix package and the daemon service.
-  nix.package = pkgs.nix;
-
-  nix.enable = false;
 }

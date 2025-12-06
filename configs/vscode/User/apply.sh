@@ -11,7 +11,7 @@ if [ "$(uname)" == "Darwin" ]; then
 
   # macOS specific commands
   cp "$SCRIPT_DIR/settings.json" ~/Library/Application\ Support/Code/User/
-  cp "$SCRIPT_DIR/keybindings.json" ~/Library/Application\ Support/Code/User/
+  #cp "$SCRIPT_DIR/keybindings.json" ~/Library/Application\ Support/Code/User/
 elif [ "$(uname)" == "Linux" ]; then
   echo "Linux detected"
   mkdir -p ~/.config/Code/User/

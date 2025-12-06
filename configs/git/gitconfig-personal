@@ -2,6 +2,7 @@
 	email = hzsp150383@gmail.com
 	name = Nyxri
 	signingkey = ~/.ssh/id_ed25519.pub
+
 #[maintenance]
 #	repo = ~/Code/graphviz-anywidget
 #	repo = ~/Code/pipefunc

@@ -1,20 +1,10 @@
-# zmodload zsh/zprof # Uncomment for profiling
-# zprof # Uncomment for profiling
-
 #==========#
 # Internal #
 #==========#
 
-
 _qc-source() { [[ -r $1 ]] && source $1 }
 _qc-eval()   { (( $+commands[$1] )) && smartcache eval $@ }
 _qc-comp()   { (( $+commands[$1] )) && smartcache comp $@ }
-
-# Placed ahead since it modifies $PATH and $FPATH
-if [[ $OSTYPE == darwin* ]] {
-    # NOTE: it detects $PATH to decide output so smartcache is not feasible
-    eval $(/opt/homebrew/bin/brew shellenv)
-}
 
 #=====================#
 # Directory Shortcuts #
@@ -25,7 +15,7 @@ hash -d cache=$XDG_CACHE_HOME
 
 hash -d zdot=$ZDOTDIR
 
-#hash -d Downloads=~/Downloads
+hash -d Downloads=~/Downloads
 #hash -d Workspace=~/Workspace
 
 #for p in ~Workspace/*(/N); hash -d ${p:t}=$p
@@ -149,7 +139,7 @@ zcomet compinit
 zmodload -i zsh/complist
 
 zcomet load Aloxaf/fzf-tab
-zstyle ':fzf-tab:*' fzf-bindings 'tab:accept'
+#zstyle ':fzf-tab:*' fzf-bindings 'tab:accept'
 zstyle ':fzf-tab:*' switch-group '<' '>'
 zstyle ':fzf-tab:*' prefix       ''
 zstyle ':fzf-tab:complete:kill:argument-rest' fzf-preview 'ps hwwo cmd --pid=$word'
@@ -172,6 +162,8 @@ zcomet load romkatv/powerlevel10k
 autoload -Uz edit-command-line; zle -N edit-command-line
 _qc-source ~zdot/30_keymaps.zsh
 
+ZSH_AUTOSUGGEST_MANUAL_REBIND=true
+ZSH_AUTOSUGGEST_PARTIAL_ACCEPT_WIDGETS+=(qc-sub-r)
 #========#
 # Config #
 #========#
@@ -205,3 +197,4 @@ _qc-eval atuin init zsh --disable-up-arrow
 _qc-eval direnv hook zsh
 
 _qc-source ~zdot/p10k.zsh
+

@@ -3,11 +3,13 @@
       create: true
       relink: true
 
+- clean:                     
+    - '~'
+    - '~/.config'
+
 - link:
     ~/.bash_profile: configs/bash/bash_profile
     ~/.bashrc: configs/bash/bashrc
-    ~/.claude/settings.json: configs/claude/settings.json
-    #~/.condarc: configs/conda/condarc
     ~/.config/atuin: configs/atuin
     ~/.config/bat/config: configs/bat/config
     ~/.config/claude/settings.json: configs/claude/settings.json
@@ -35,13 +37,8 @@
     ~/.config/zsh/30_keymaps.zsh: configs/zsh/30_keymaps.zsh
     ~/.zshenv: configs/zsh/zshenv
     ~/.config/zsh/p10k.zsh: configs/zsh/p10k.zsh
+    ~/.vimrc: configs/vim/.vimrc
 
-#- shell:
-#  - bash scripts/sync-uv-tools.sh
-#  - git submodule sync --recursive
-#  - git submodule update --init --recursive --remote
-#  - command: '[[ "$(uname)" = "Darwin" ]] && [ -f ./secrets/install ] && (echo "SECRETS" && ./secrets/install) || true'
-#    stdout: true
 
 # -- Only on Linux --
 #- defaults:
@@ -60,7 +57,7 @@
       if: '[ "$(uname)" = "Darwin" ]'
 - link:
     ~/.gitconfig-sign: configs/git/gitconfig-sign
+    ~/.config/kitty: configs/kitty
     #~/.config/karabiner/karabiner.json: configs/karabiner/karabiner.json
     #~/Work/.stignore: configs/syncthing/stignore
     #~/Sync/.stignore: configs/syncthing/stignore
-    #"~/Library/Application Support/iTerm2/DynamicProfiles/Profiles.json": configs/iterm/Profiles.json

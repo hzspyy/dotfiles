@@ -1,1 +1,3 @@
 source ~/dotfiles/configs/shell/00_bashrc
+
+. "$HOME/.local/share/../bin/env"

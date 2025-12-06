@@ -1,8 +1,3 @@
-#alias l="eza -al --icons --group-directories-first"
-#alias ll="eza -a --icons --group-directories-first"
-#alias ssh="kitty +kitten ssh"
-#alias du="dust -r -n 999999999"
-#alias tree="tree -aC"
 #alias g='XDG_CONFIG_HOME="$HOME/.config" lazygit'
 #alias gs="git status"
 #alias ga="git add -A"
@@ -18,9 +13,6 @@
 #alias gt='cd "$(git rev-parse --show-toplevel)"'
 alias l='eza -lah --group-directories-first --git --time-style=long-iso'
 alias lt='l -TI .git'
-alias tm='trash-put'
-alias ms='miniserve -vqHDp 58080 --random-route'
-alias ipy='ipython --profile=qc'
 alias clc='clipcopy'
 alias clp='clippaste'
 alias pb='curl -F "c=@-" "http://fars.ee/?u=1"'
@@ -36,3 +28,7 @@ alias -g :h='--help 2>&1 | bat -pl help'
 if [[ $OSTYPE == linux* ]] {
     alias open='xdg-open'
 }
+
+if [[ "$TERM" == "xterm-kitty" || -n "$KITTY_WINDOW_ID" ]]; then
+    alias ssh="kitty +kitten ssh"
+fi

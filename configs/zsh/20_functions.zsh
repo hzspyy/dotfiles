@@ -1,5 +1,3 @@
-
-
 upgrade-all() {
     _qc-upd() {
         if (( $+commands[$1] )) {
@@ -7,10 +5,8 @@ upgrade-all() {
             $@
         }
     }
-    _qc-upd brew upgrade
     _qc-upd rustup update
     _qc-upd cargo install-update --all
-    _qc-upd tldr --update
 }
 
 

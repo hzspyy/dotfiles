@@ -11,6 +11,7 @@
 
     # CLI Tools (Part 1)
     brews = [
+      "duti"
       "atuin" # Shell history sync tool
       "autossh" # Automatically restart SSH sessions
       "bat" # Better cat with syntax highlighting
@@ -36,7 +37,7 @@
       "go" # Go programming language
       "graphviz" # Graph visualization
       "grep" # GNU grep
-      "hyperfine" 
+      "hyperfine"
       "httpie"
       "htop" # Process viewer
       "iperf3" # Network bandwidth tool v3
@@ -44,13 +45,12 @@
       "just" # Command runner
       "lazygit" # Git TUI
       "less"
-      "nali" 
+      "nali"
       "neovim"
       "nmap" # Network scanner
       "node" # JavaScript runtime
       "ollama" # Ollama LLMs
       "pipx" # Python app installer
-      "pwgen" # Password generator
       "rclone" # Cloud storage sync
       "ripgrep"
       "rsync" # File sync tool
@@ -64,29 +64,38 @@
       #"tre-command" # Tree command, improved
       "tree" # Directory listing
       "tree-sitter"
+      "tree-sitter-cli"
       "vim"
       "wget" # File downloader
       "yq" # YAML processor
       "yazi"
       "zoxide"
-      "zsh" # Shell
+      #"zsh" # Shell
+      #"luarocks" 
+      "imagemagick"
+
     ];
 
     # GUI Applications (Casks)
     casks = [
       "1password-cli" # 1Password CLI
-      #"avast-security" # Antivirus
+      "betterdisplay"
       "chromedriver" # Chrome automation
-      "docker" # Container platform
+      #"docker" # Container platform
       "font-fira-code" # Programming font
       "font-fira-mono-nerd-font" # Nerd font
+      "font-jetbrains-mono-nerd-font"
+      "font-sf-mono"
       #"git-credential-manager" # Git credential helper
       #"iterm2" # Terminal emulator
       #"karabiner-elements" # Keyboard customizer
+      #"keka"
       "kitty"
-      "keepingyouawake" # Prevent sleep
+      #"keepingyouawake" # Prevent sleep
       #"keyboard-maestro" # Automation tool
+      "mac-mouse-fix"
       #"mpv" # Media player
+      "orbstack"
       #"obsidian" # Note taking app
       "parsec"
       #"qbittorrent" # Torrent client
@@ -98,10 +107,10 @@
       #"spotify" # Music streaming
       #"syncthing" # File synchronization
       "tailscale"
-      #"teamviewer" # Remote control
       #"telegram" # Messenger
       #"tor-browser" # Private browser
       "visual-studio-code" # Code editor
+      "zotero"
     ]
     ++ (
       if config.isPersonal then

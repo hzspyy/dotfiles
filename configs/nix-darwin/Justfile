@@ -1,79 +1,103 @@
-# just is a command runner, Justfile is very similar to Makefile, but simpler.
+# =============================================================================
+#  Nix-Darwin Control Center
+# =============================================================================
 
-# TODO update hostname here!
+# Configuration
 hostname := "smc-mac"
+flake_path := "."
 
-# List all the just commands
+# Colors
+green := `tput setaf 2`
+blue := `tput setaf 4`
+bold := `tput bold`
+reset := `tput sgr0`
+
+# Default: List available commands
 default:
-  @just --list
+    @just --list --unsorted
 
-############################################################################
-#
-#  Darwin related commands
-#
-############################################################################
+# =============================================================================
+#  🍎 System Management
+# =============================================================================
 
+# Apply the current configuration to the system
+[group('System')]
+switch:
+    @echo "{{bold}}{{blue}}==> Rebuilding system for {{hostname}}...{{reset}}"
+    sudo nix run nix-darwin -- switch --flake {{flake_path}}#{{hostname}}
+    @echo "{{bold}}{{green}}==> System updated successfully! 🍎{{reset}}"
 
-[group('desktop')]
-darwin: #darwin-set-proxy
-  sudo nix run nix-darwin -- switch --flake ~/dotfiles/configs/nix-darwin
+# Debug build (verbose output)
+[group('System')]
+debug:
+    @echo "{{bold}}{{blue}}==> Debugging build...{{reset}}"
+    nix build {{flake_path}}#darwinConfigurations.{{hostname}}.system --show-trace --verbose --extra-experimental-features 'nix-command flakes'
+    sudo -E ./result/sw/bin/darwin-rebuild switch --flake {{flake_path}}#{{hostname}} --show-trace --verbose
 
-[group('desktop')]
-darwin-debug: #darwin-set-proxy
-  nix build .#darwinConfigurations.{{hostname}}.system --show-trace --verbose \
-    --extra-experimental-features 'nix-command flakes'
+# =============================================================================
+#  🍺 Homebrew Shortcuts (The Magic Part)
+# =============================================================================
 
-  sudo -E ./result/sw/bin/darwin-rebuild switch --flake .#{{hostname}} --show-trace --verbose
+# Install a Brew package, add to config, and format
+[group('Homebrew')]
+add name:
+    @echo "{{bold}}{{blue}}==> 1. Installing {{name}} immediately (for now)...{{reset}}"
+    @brew install {{name}} || true
+    @echo "{{bold}}{{blue}}==> 2. Persisting {{name}} to homebrew.nix (for later)...{{reset}}"
+    @# 这一步将软件名插入到 'brews = [' 的下一行
+    @perl -pi -e 's/brews = \[/brews = \[\n      "{{name}}"/g' homebrew.nix
+    @echo "{{bold}}{{blue}}==> 3. Formatting file...{{reset}}"
+    @nix fmt homebrew.nix
+    @echo "{{bold}}{{green}}==> Done! {{name}} is installed and saved. 🍺{{reset}}"
 
-############################################################################
-#
-#  nix related commands
-#
-############################################################################
+# Install a Cask app, add to config, and format
+[group('Homebrew')]
+cask name:
+    @echo "{{bold}}{{blue}}==> 1. Installing Cask {{name}} immediately...{{reset}}"
+    @brew install --cask {{name}} || true
+    @echo "{{bold}}{{blue}}==> 2. Persisting {{name}} to homebrew.nix...{{reset}}"
+    @# 这一步将软件名插入到 'casks = [' 的下一行
+    @perl -pi -e 's/casks = \[/casks = \[\n      "{{name}}"/g' homebrew.nix
+    @echo "{{bold}}{{blue}}==> 3. Formatting file...{{reset}}"
+    @nix fmt homebrew.nix  
+    @echo "{{bold}}{{green}}==> Done! {{name}} is installed and saved. 🖥️{{reset}}"
 
-# Update all the flake inputs
-[group('nix')]
-up:
-  nix flake update
+# =============================================================================
+#  ❄️ Nix Maintenance
+# =============================================================================
 
-# Update specific input
-# Usage: just upp nixpkgs
-[group('nix')]
-upp input:
-  nix flake update {{input}}
+# Update flake inputs
+[group('Nix')]
+update:
+    @echo "{{bold}}{{blue}}==> Updating flake inputs...{{reset}}"
+    nix flake update
 
-# List all generations of the system profile
-[group('nix')]
-history:
-  nix profile history --profile /nix/var/nix/profiles/system
+# Update a specific input (Usage: just up <input>)
+[group('Nix')]
+up input:
+    nix flake update {{input}}
 
-# Open a nix shell with the flake
-[group('nix')]
+# Open a REPL with nixpkgs loaded
+[group('Nix')]
 repl:
-  nix repl -f flake:nixpkgs
+    nix repl -f flake:nixpkgs
 
-# remove all generations older than 7 days
-# on darwin, you may need to switch to root user to run this command
-[group('nix')]
-clean:
-  sudo nix profile wipe-history --profile /nix/var/nix/profiles/system  --older-than 7d
-
-# Garbage collect all unused nix store entries
-[group('nix')]
-gc:
-  # garbage collect all unused nix store entries(system-wide)
-  sudo nix-collect-garbage --delete-older-than 7d
-  # garbage collect all unused nix store entries(for the user - home-manager)
-  # https://github.com/NixOS/nix/issues/8508
-  nix-collect-garbage --delete-older-than 7d
-
-[group('nix')]
+# Format all Nix files
+[group('Nix')]
 fmt:
-  # format the nix files in this repo
-  nix fmt
+    nix fmt
 
-# Show all the auto gc roots in the nix store
-[group('nix')]
-gcroot:
-  ls -al /nix/var/nix/gcroots/auto/
+# =============================================================================
+#  🧹 Cleanup
+# =============================================================================
+
+# Garbage collect and remove old generations (>7d)
+[group('Cleanup')]
+clean:
+    @echo "{{bold}}{{blue}}==> Cleaning up old generations...{{reset}}"
+    sudo nix profile wipe-history --profile /nix/var/nix/profiles/system --older-than 7d
+    @echo "{{bold}}{{blue}}==> Collecting garbage...{{reset}}"
+    sudo nix-collect-garbage --delete-older-than 7d
+    nix-collect-garbage --delete-older-than 7d
+    @echo "{{bold}}{{green}}==> System Cleaned! 🧹{{reset}}"
 

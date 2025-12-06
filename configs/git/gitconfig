@@ -30,10 +30,7 @@
 	defaultBranch = main
 [alias]
 	permission-reset = !git diff -p -R --no-ext-diff --no-color | grep -E \"^(diff|(old|new) mode)\" --color=never | git apply
-#[credential]
-#	credentialStore = plaintext
-#	helper = 
-#	helper = /usr/local/share/gcm-core/git-credential-manager
+
 [filter "lfs"]
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f
@@ -41,8 +38,6 @@
 	required = true
 [http]
 	version = HTTP/1.1
-#[credential "https://dev.azure.com"]
-#	useHttpPath = true
 
 [rerere]
 	enabled = true
@@ -55,26 +50,10 @@
 [delta]
 	navigate = true  # use n and N to move between diff sections
 	dark = true  # or light = true, or omit for auto-detection
-#[credential "https://git.lab.nijho.lt"]
-#	provider = generic
-#
+
 #[core]
 #	editor = nvim
 #	pager = less -FRX
-#
-#[user]
-#	name = 33
-#	email = 33@gmail.com
-#	signingkey = ssh-ed25519 AAAAC3N...
-#
-#[gpg]
-#	format = ssh
-#
-#[gpg "ssh"]
-#	program = /Applications/1Password.app/Contents/MacOS/op-ssh-sign
-#
-#[commit]
-#	gpgsign = true
 #
 #[pull]
 #	rebase = true

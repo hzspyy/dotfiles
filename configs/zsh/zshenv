@@ -1,48 +1,62 @@
-export XDG_CONFIG_HOME=~/.config
+# ==========================================
+# 1. XDG Base Directory Setup
+# ==========================================
+
+export XDG_CONFIG_HOME="$HOME/.config"
+export XDG_DATA_HOME="$HOME/.local/share"
 
 if [[ "$OSTYPE" == darwin* ]]; then
-    export XDG_CACHE_HOME=~/nvme-cache
-elif [[ "$OSTYPE" == linux* ]]; then
-    export XDG_CACHE_HOME=~/.cache
+    export XDG_CACHE_HOME="$HOME/nvme-cache" 
 else
-    export XDG_CACHE_HOME=~/.cache
+    export XDG_CACHE_HOME="$HOME/.cache"
 fi
 
 
-ZDOTDIR=$XDG_CONFIG_HOME/zsh
-
-typeset -U fpath path  # set unique
-
-path=(
-    #$ZDOTDIR/scripts
-    #~/go/bin
-    $path
-)
+ZDOTDIR="$XDG_CONFIG_HOME/zsh"
 
 
+# ==========================================
+# 2. Global Environment Variables
+# ==========================================
 
-# Software specific
 export EDITOR="vim"
 export VISUAL="vim"
-#export BAT_THEME="Catppuccin Mocha"
-#export HOMEBREW_NO_ANALYTICS=1
-#export HOMEBREW_DOWNLOAD_CONCURRENCY=8
-#export LESSKEYIN=$HOME/.config/less/.lesskey
-#export LESSHISTFILE=$HOME/.config/less/.lesshst
-#export FZF_DEFAULT_COMMAND="fd $__FD_COMMAND"
-#export FZF_DEFAULT_OPTS="
-#--reverse --ansi
-#--bind=ctrl-u:up,ctrl-e:down,ctrl-n:backward-char,ctrl-i:forward-char,ctrl-b:backward-word,ctrl-h:forward-word,tab:toggle+down,shift-tab:toggle+up,ctrl-a:select-all,ctrl-r:toggle-all
-#--border --scrollbar=▌"
-
+export LESSKEYIN=$HOME/.config/less/.lesskey
+export LESSHISTFILE=$HOME/.config/less/.lesshst
 export LESS='--quit-if-one-screen --RAW-CONTROL-CHARS --chop-long-lines'
-
-export FZF_DEFAULT_OPTS='--ansi --height=60% --reverse --cycle --bind=tab:accept'
 
 export MANPAGER='sh -c "col -bx | bat -pl man --theme=Monokai\ Extended"'
 export MANROFFOPT='-c'
 export MOLD_JOBS=1
 
+export FZF_DEFAULT_COMMAND="fd $__FD_COMMAND"
+export FZF_DEFAULT_OPTS="
+--reverse --ansi
+--bind=ctrl-k:up,ctrl-j:down,ctrl-h:backward-char,ctrl-l:forward-char,ctrl-b:backward-word,ctrl-i:forward-word,tab:toggle+down,shift-tab:toggle+up,ctrl-a:select-all,ctrl-r:toggle-all
+--border --scrollbar=▌"
 
-# clean up
-# unset
+# ==========================================
+# 3. Homebrew & Mirrors (China)
+# ==========================================
+
+export HOMEBREW_BREW_GIT_REMOTE="https://mirrors.tuna.tsinghua.edu.cn/git/homebrew/brew.git"
+export HOMEBREW_CORE_GIT_REMOTE="https://mirrors.tuna.tsinghua.edu.cn/git/homebrew/homebrew-core.git"
+export HOMEBREW_INSTALL_FROM_API=1
+export HOMEBREW_API_DOMAIN="https://mirrors.cernet.edu.cn/homebrew-bottles/api"
+export HOMEBREW_BOTTLE_DOMAIN="https://mirrors.cernet.edu.cn/homebrew-bottles"
+export HOMEBREW_PIP_INDEX_URL="https://mirrors.cernet.edu.cn/pypi/web/simple"
+export HOMEBREW_NO_ANALYTICS=1
+
+
+# ==========================================
+# 4. PATH Configuration
+# ==========================================
+
+typeset -U fpath path  # set unique
+
+path=(
+    #$ZDOTDIR/scripts
+    "$HOME/.local/bin"
+    $path
+)
+
