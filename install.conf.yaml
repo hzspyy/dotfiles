@@ -7,6 +7,7 @@
     - '~'
     - '~/.config'
 
+
 - link:
     ~/.bash_profile: configs/bash/bash_profile
     ~/.bashrc: configs/bash/bashrc
@@ -61,3 +62,15 @@
     #~/.config/karabiner/karabiner.json: configs/karabiner/karabiner.json
     #~/Work/.stignore: configs/syncthing/stignore
     #~/Sync/.stignore: configs/syncthing/stignore
+
+- shell:
+  - description: Installing Ubuntu Packages (Root required)
+    command: |
+      if [ -f /etc/debian_version ]; then
+        echo "Detected Debian/Ubuntu system."
+        sudo bash ubuntu/install_packages.sh
+      else
+        echo "Not Ubuntu, skipping package installation."
+      fi
+    stdout: true
+    stderr: true

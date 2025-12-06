@@ -1,3 +1,2 @@
 source ~/.bash_profile
 
-. "$HOME/.local/share/../bin/env"

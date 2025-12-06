@@ -14,6 +14,12 @@ set tabstop=2 shiftwidth=2 softtabstop=2 expandtab smartindent
 set ignorecase smartcase
 set hlsearch incsearch
 
+
+augroup restore_cursor
+  autocmd!
+  autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
+augroup END
+
 let mapleader = " "
 nnoremap <leader>w :w<CR>
 nnoremap <leader>q :q<CR>
