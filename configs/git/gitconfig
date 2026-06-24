@@ -12,7 +12,7 @@
 	indentHeuristic = true
 	compactionHeuristic = true
 [core]
-	pager = delta
+  #pager = delta
 	preloadindex = true
 	fscache = true
 	editor = vim

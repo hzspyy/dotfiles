@@ -10,7 +10,7 @@ ServerAliveCountMax 3
 
 # Add keys to agent when used and prefer publickey auth
 AddKeysToAgent yes
-PreferredAuthentications publickey
+#PreferredAuthentications publickey
 
 # (Optional) Do not enable StrictHostKeyChecking by default — keep commented to avoid security risk
 # StrictHostKeyChecking no

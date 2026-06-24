@@ -21,8 +21,10 @@
     ~/.config/lazygit/config.yml: configs/lazygit/config.yml
     ~/.config/nix-darwin: configs/nix-darwin
     ~/.config/starship.toml: configs/starship/starship.toml
+    ~/.config/tmux/tmux.conf: configs/tmux/tmux.conf
+    ~/.config/yazi:  configs/yazi
     ~/.config/zellij/config.kdl: configs/zellij/config.kdl
-    ~/.direnvrc: configs/direnv/direnvrc
+    ~/.config/.direnvrc: configs/direnv/direnvrc
     ~/.gitconfig-personal: configs/git/gitconfig-personal
     ~/.gitconfig: configs/git/gitconfig
     #~/.local/bin/git-fixup-file: scripts/git-fixup-file.sh

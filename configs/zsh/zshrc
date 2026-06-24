@@ -68,13 +68,14 @@ _qc-source ~zdot/00_alias.zsh
 #============#
 # Completion #
 #============#
-setopt menu_complete  # list choices when ambiguous
+#setopt menu_complete  # list choices when ambiguous
+zstyle ':completion:*' menu         yes  
 #zstyle ":completion:*:*:*:*:*" menu select
 
 zstyle ':completion:*' sort         false                          # preserve inherent orders
 zstyle ':completion:*' list-colors  ${(s.:.)LS_COLORS}             # colorize files & folders
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}' 'l:|=* r:|=*'  # auto-cap, substr
-zstyle ":completion:*" file-sort change
+#zstyle ":completion:*" file-sort change
 zstyle ':completion:*' use-cache    true
 zstyle ':completion:*' cache-policy _qc-cache-policy
 _qc-cache-policy() { local f=("$1"(Nm-7)); [[ -z $f ]] }  # TTL = 7 days
@@ -139,7 +140,7 @@ zcomet compinit
 zmodload -i zsh/complist
 
 zcomet load Aloxaf/fzf-tab
-#zstyle ':fzf-tab:*' fzf-bindings 'tab:accept'
+zstyle ':fzf-tab:*' fzf-bindings 'tab:accept'
 zstyle ':fzf-tab:*' switch-group '<' '>'
 zstyle ':fzf-tab:*' prefix       ''
 zstyle ':fzf-tab:complete:kill:argument-rest' fzf-preview 'ps hwwo cmd --pid=$word'
@@ -198,3 +199,7 @@ _qc-eval direnv hook zsh
 
 _qc-source ~zdot/p10k.zsh
 
+eval "$(zoxide init zsh)"
+eval "$(codex completion zsh)"
+eval "$(/usr/libexec/path_helper)"
+source "/Users/nyxri/.openclaw/completions/openclaw.zsh"

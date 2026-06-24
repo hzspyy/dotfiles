@@ -99,8 +99,8 @@ fi
 # --- Zoxide (z) ---
 if ! command -v zoxide &> /dev/null; then
     echo -e "${GREEN}📂 Installing Zoxide...${NC}"
-    curl -sS https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | bash
-    # 需要手动添加到 path，或者依靠 dotfiles 的配置
+    # 【关键修改】显式指定 --bin-dir，无视 $HOME 环境变量
+    curl -sS https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | bash -s -- --bin-dir "/usr/local/bin"
 fi
 
 

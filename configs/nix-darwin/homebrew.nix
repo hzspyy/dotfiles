@@ -11,6 +11,13 @@
 
     # CLI Tools (Part 1)
     brews = [
+      "poppler"
+      "socat"
+      "mpv"
+      "sevenzip"
+      "resvg"
+      "poppler"
+      "difftastic"
       "duti"
       "atuin" # Shell history sync tool
       "autossh" # Automatically restart SSH sessions
@@ -78,6 +85,9 @@
 
     # GUI Applications (Casks)
     casks = [
+      "mactex"
+      "maczip"
+      "font-symbols-only-nerd-font"
       "1password-cli" # 1Password CLI
       "betterdisplay"
       "chromedriver" # Chrome automation
