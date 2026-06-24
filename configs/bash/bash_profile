@@ -1,1 +1,2 @@
-source ~/dotfiles/configs/shell/00_bashrc
+# ~/.bash_profile — login shells source the interactive config too.
+[[ -f ~/.bashrc ]] && source ~/.bashrc

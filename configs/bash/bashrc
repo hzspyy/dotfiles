@@ -1,2 +1,43 @@
-source ~/.bash_profile
+# ~/.bashrc — Bash fallback config.
+# Zsh is the primary shell (see configs/zsh/); this mirrors the shell-agnostic
+# essentials so an occasional Bash session is still usable.
 
+# ==========================================
+# Environment (login + non-login)
+# ==========================================
+
+export XDG_CONFIG_HOME="$HOME/.config"
+export XDG_DATA_HOME="$HOME/.local/share"
+if [[ "$OSTYPE" == darwin* ]]; then
+    export XDG_CACHE_HOME="$HOME/nvme-cache"
+else
+    export XDG_CACHE_HOME="$HOME/.cache"
+fi
+
+export EDITOR="vim"
+export VISUAL="vim"
+export LESS='--quit-if-one-screen --RAW-CONTROL-CHARS --chop-long-lines'
+
+# Homebrew (China mirrors)
+export HOMEBREW_BREW_GIT_REMOTE="https://mirrors.tuna.tsinghua.edu.cn/git/homebrew/brew.git"
+export HOMEBREW_CORE_GIT_REMOTE="https://mirrors.tuna.tsinghua.edu.cn/git/homebrew/homebrew-core.git"
+export HOMEBREW_API_DOMAIN="https://mirrors.cernet.edu.cn/homebrew-bottles/api"
+export HOMEBREW_BOTTLE_DOMAIN="https://mirrors.cernet.edu.cn/homebrew-bottles"
+export HOMEBREW_PIP_INDEX_URL="https://mirrors.cernet.edu.cn/pypi/web/simple"
+export HOMEBREW_NO_ANALYTICS=1
+[[ -x /opt/homebrew/bin/brew ]] && eval "$(/opt/homebrew/bin/brew shellenv)"
+
+export PATH="$HOME/.local/bin:$PATH"
+
+# ==========================================
+# Interactive-only
+# ==========================================
+[[ $- != *i* ]] && return
+
+if command -v eza >/dev/null; then
+    alias l='eza -lah --group-directories-first --git --time-style=long-iso'
+    alias lt='l -TI .git'
+fi
+[[ "$OSTYPE" == linux* ]] && alias open='xdg-open'
+
+command -v direnv >/dev/null && eval "$(direnv hook bash)"
