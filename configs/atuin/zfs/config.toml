@@ -2,9 +2,9 @@
 # the performance issues between ZFS and SQLite.
 # See https://github.com/atuinsh/atuin/issues/952
 #
-# In configs/shell/30_misc.sh, we detect if the Atuin daemon is running
-# and set ATUIN_CONFIG_DIR to point to this file only when needed.
-# Run scripts/setup-atuin-daemon.sh on ZFS systems to set up the daemon.
+# On ZFS systems, point Atuin at this config by setting
+# ATUIN_CONFIG_DIR="$HOME/.config/atuin/zfs".
+# Run scripts/setup-atuin-daemon.sh to set up the daemon.
 
 ## enable or disable automatic sync
 auto_sync = true
