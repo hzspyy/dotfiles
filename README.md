@@ -29,18 +29,18 @@ managed declaratively with [nix-darwin](https://github.com/nix-darwin/nix-darwin
 ```bash
 git clone git@github.com:hzspyy/dotfiles.git ~/dotfiles
 cd ~/dotfiles
+./install
 ```
 
-### macOS
+`./install` is cross-platform: it ensures [dotbot](https://github.com/anishathalye/dotbot) is
+available (via Homebrew on macOS, via `uv` on Linux), then links everything according to
+[`install.conf.yaml`](install.conf.yaml). On Ubuntu/Debian the `shell` step also installs base
+packages with `sudo configs/ubuntu/install_packages.sh`.
 
-`install_mac` runs dotbot against [`install.conf.yaml`](install.conf.yaml) (install dotbot first,
-e.g. `brew install dotbot`):
+### macOS — nix-darwin
 
-```bash
-./install_mac
-```
-
-Then apply the nix-darwin configuration — see [`configs/nix-darwin/README.md`](configs/nix-darwin/README.md):
+After `./install`, apply the nix-darwin configuration — see
+[`configs/nix-darwin/README.md`](configs/nix-darwin/README.md):
 
 ```bash
 # Install Nix (Determinate Systems installer)
@@ -48,15 +48,6 @@ curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix 
 
 # Apply the configuration (alias: nixswitch)
 nix run nix-darwin -- switch --flake ~/dotfiles/configs/nix-darwin
-```
-
-### Ubuntu / Debian
-
-`install_ubuntu` bootstraps dotbot, links the configs, and (via the `shell` step in
-`install.conf.yaml`) installs base packages with `sudo configs/ubuntu/install_packages.sh`:
-
-```bash
-./install_ubuntu
 ```
 
 ### Uninstall
@@ -94,8 +85,7 @@ nix run nix-darwin -- switch --flake ~/dotfiles/configs/nix-darwin
 │   └── zsh/                # Zsh: zshenv, zshrc, aliases, functions, keymaps, p10k
 ├── scripts/                # Standalone helper scripts (not symlinked by default)
 ├── install.conf.yaml       # dotbot link map
-├── install_mac             # dotbot entry point (macOS)
-├── install_ubuntu          # dotbot bootstrap + entry point (Ubuntu/Debian)
+├── install                 # Cross-platform installer (ensures dotbot, runs dotbot)
 ├── uninstall.py            # Remove symlinks
 └── Dockerfile              # Throwaway Ubuntu container to try the shell
 ```

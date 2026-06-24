@@ -29,18 +29,18 @@
 ```bash
 git clone git@github.com:hzspyy/dotfiles.git ~/dotfiles
 cd ~/dotfiles
+./install
 ```
 
-### macOS
+`./install` 跨平台：它会先确保 [dotbot](https://github.com/anishathalye/dotbot) 可用
+（macOS 用 Homebrew、Linux 用 `uv`），再按 [`install.conf.yaml`](install.conf.yaml) 创建所有
+软链接。在 Ubuntu/Debian 上，其中的 `shell` 步骤还会执行
+`sudo configs/ubuntu/install_packages.sh` 安装基础软件包。
 
-`install_mac` 会用 [`install.conf.yaml`](install.conf.yaml) 调用 dotbot（需先安装 dotbot，
-例如 `brew install dotbot`）：
+### macOS —— nix-darwin
 
-```bash
-./install_mac
-```
-
-随后应用 nix-darwin 配置 —— 见 [`configs/nix-darwin/README.md`](configs/nix-darwin/README.md)：
+执行 `./install` 之后，应用 nix-darwin 配置 —— 见
+[`configs/nix-darwin/README.md`](configs/nix-darwin/README.md)：
 
 ```bash
 # 安装 Nix（Determinate Systems 安装器）
@@ -48,15 +48,6 @@ curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix 
 
 # 应用配置（别名：nixswitch）
 nix run nix-darwin -- switch --flake ~/dotfiles/configs/nix-darwin
-```
-
-### Ubuntu / Debian
-
-`install_ubuntu` 会引导 dotbot、创建软链接，并（通过 `install.conf.yaml` 里的 `shell` 步骤）
-执行 `sudo configs/ubuntu/install_packages.sh` 安装基础软件包：
-
-```bash
-./install_ubuntu
 ```
 
 ### 卸载
@@ -94,8 +85,7 @@ nix run nix-darwin -- switch --flake ~/dotfiles/configs/nix-darwin
 │   └── zsh/                # Zsh：zshenv、zshrc、别名、函数、键位、p10k
 ├── scripts/                # 独立辅助脚本（默认不软链接）
 ├── install.conf.yaml       # dotbot 链接映射表
-├── install_mac             # dotbot 入口（macOS）
-├── install_ubuntu          # dotbot 引导 + 入口（Ubuntu/Debian）
+├── install                 # 跨平台安装器（确保 dotbot 存在并执行 dotbot）
 ├── uninstall.py            # 移除软链接
 └── Dockerfile              # 一次性 Ubuntu 容器，用于试用 shell
 ```

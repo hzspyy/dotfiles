@@ -1,27 +1,16 @@
-# This Dockerfile builds an image to test or use the shell environment defined
-# in the basnijholt/dotfiles repository (https://github.com/basnijholt/dotfiles).
-# It replicates the cross-platform shell configuration described in the README.
+# Throwaway Ubuntu container to try this dotfiles' shell environment.
+# Only Git, Zsh and curl are needed up front; ./install pulls in the rest.
 
 FROM ubuntu:25.04
 
-# Install git and zsh (only Git is required!)
-RUN apt-get update && apt-get install -y git zsh
+RUN apt-get update && apt-get install -y git zsh curl ca-certificates && rm -rf /var/lib/apt/lists/*
 
-# Clone the dotfiles repository using HTTPS instead of SSH
-RUN git config --global url."https://github.com/".insteadOf git@github.com:
+# Clone the dotfiles repository over HTTPS
+RUN git clone https://github.com/hzspyy/dotfiles.git /root/dotfiles
 
-# Clone the dotfiles repository
-RUN git clone https://github.com/basnijholt/dotfiles.git ~/dotfiles
+# Link configs (and bootstrap dotbot via uv). Tolerate the sudo-only package
+# step failing inside the minimal container.
+RUN cd /root/dotfiles && ./install || true
 
-# Initialize submodules and skip the private 'secrets' submodule
-RUN cd ~/dotfiles && \
-    git submodule init && \
-    git config submodule.secrets.update none && \
-    git submodule update --init --recursive --jobs 8
-
-# Install the dotfiles
-RUN cd ~/dotfiles && ./install || true
-
-# Set the working directory and entrypoint
 WORKDIR /root/dotfiles
 CMD ["/bin/zsh"]

@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+# Unified installer: ensures dotbot is available, then links everything via
+# install.conf.yaml. Works on macOS (Homebrew) and Linux (uv).
+set -euo pipefail
+
+BASEDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+cd "${BASEDIR}"
+
+CONFIG="install.conf.yaml"
+
+# Resolve a runnable dotbot command into the DOTBOT array, installing it if needed.
+ensure_dotbot() {
+    if command -v dotbot >/dev/null 2>&1; then
+        DOTBOT=(dotbot)
+        return
+    fi
+
+    case "$(uname -s)" in
+        Darwin)
+            if command -v brew >/dev/null 2>&1; then
+                echo "==> Installing dotbot via Homebrew..."
+                brew install dotbot
+                DOTBOT=(dotbot)
+                return
+            fi
+            ;;
+        Linux)
+            if ! command -v uv >/dev/null 2>&1; then
+                echo "==> Installing uv..."
+                curl -LsSf https://astral.sh/uv/install.sh | sh
+                export PATH="${HOME}/.local/bin:${PATH}"
+            fi
+            if command -v uv >/dev/null 2>&1; then
+                echo "==> Running dotbot via uv..."
+                DOTBOT=(uv tool run dotbot)
+                return
+            fi
+            ;;
+    esac
+
+    echo "error: dotbot not found and could not be installed automatically." >&2
+    echo "       Install it manually (e.g. 'brew install dotbot' or 'uv tool install dotbot') and re-run." >&2
+    exit 1
+}
+
+ensure_dotbot
+"${DOTBOT[@]}" -d "${BASEDIR}" -c "${CONFIG}" "${@}"
