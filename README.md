@@ -1,5 +1,7 @@
 # 🏠 dotfiles
 
+**English** · [简体中文](README.zh-CN.md)
+
 My personal, cross-platform dotfiles for **macOS** (Apple Silicon) and **Ubuntu/Debian** Linux.
 Symlinks are managed with [dotbot](https://github.com/anishathalye/dotbot); macOS system state is
 managed declaratively with [nix-darwin](https://github.com/nix-darwin/nix-darwin).
